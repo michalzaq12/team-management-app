@@ -1,4 +1,5 @@
 import axios from 'axios'
+import authService from './auth';
 import errorHandler from './errorHanlder';
 
 const API_URL = 'http://18.130.184.78:5000/';
@@ -14,14 +15,15 @@ export default {
   },
 
   setHeader () {
-    //axios.defaults.headers.common['Authorization'] = `Bearer ${jwtService.getToken()}`;
+    console.log('set Header')
+    axios.defaults.headers.common['Authorization'] = `JWT ${authService.getToken()}`;
   },
 
   removeHeader(){
     delete axios.defaults.headers.common['Authorization'];
   },
 
-  
+
   get () {
     return axios.get(...arguments)
   },
@@ -42,5 +44,5 @@ export default {
     return axios.delete(...arguments)
   }
 
-  
+
 };
