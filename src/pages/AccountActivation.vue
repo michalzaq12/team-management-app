@@ -35,7 +35,7 @@ export default {
                 this.$eventBus.$emit('loading', false);
                 this.setTimers()
             }).catch(() => {
-                this.$router.push('/');
+                this.redirectToLoginPage();
                 this.$eventBus.$emit('loading', false);
             })
         },
