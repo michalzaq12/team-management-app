@@ -2,7 +2,7 @@
 <div>
     <app-header v-model="drawer"/>
     <app-menu v-model="drawer"/>
-     <v-content>
+     <v-content class="main-container">
          <v-container fluid fill-height :class="{'pa-0': $vuetify.breakpoint.xsOnly}">
              <v-layout justify-center align-center>
         <slot />
@@ -30,3 +30,10 @@ export default {
     }
 }
 </script>
+
+
+<style>
+  .main-container{
+    min-height: 100vh;
+  }
+</style>
