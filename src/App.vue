@@ -5,7 +5,7 @@
     </basic-layout>
     <router-view v-else></router-view>
     <loading :loading="isLoading" />
-      <v-snackbar v-model="snackbar" color="error" :timeout="5000">
+      <v-snackbar v-model="snackbar" :color="color" :timeout="5000" :bottom="true" :right="true">
         {{ errorText }}
         <v-btn dark flat @click="snackbar = false">
           Close
@@ -18,7 +18,7 @@
   import BasicLayout from '@/BasicLayout';
   import Vue from 'vue';
   import Loading from '@/components/Loading';
-  
+
   export default {
     name: 'app',
     components: {
@@ -29,7 +29,8 @@
       return {
         isLoading: false,
         errorText: null,
-        snackbar: false
+        snackbar: false,
+        color: 'error'
       }
     },
     created() {
@@ -37,11 +38,36 @@
 
       this.$eventBus.$on('error', msg => {
         this.errorText = msg;
+        this.color = 'error';
         this.snackbar = true;
       });
+
+      this.$eventBus.$on('info', msg => {
+        this.errorText = msg;
+        this.color = 'info';
+        this.snackbar = true;
+      });
+
     }
   }
 </script>
+
+
+
+<style>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s
+  }
+
+  .fade-enter,
+  .fade-leave-to
+    /* .fade-leave-active in <2.1.8 */
+
+  {
+    opacity: 0;
+  }
+</style>
 
 
 
