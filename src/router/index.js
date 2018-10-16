@@ -5,6 +5,8 @@ import Login from '@/pages/Login'
 import TeamList from '@/pages/TeamsList'
 import TeamSearch from '@/pages/TeamSearch'
 import AccountActivation from '@/pages/AccountActivation'
+import SignUp from '@/pages/SignUp';
+import Calendar from '@/pages/Calendar';
 
 Vue.use(Router);
 
@@ -19,6 +21,12 @@ export default new Router({
       name: 'login',
       path: '/login',
       component: Login,
+      meta: { omitAuth: true, withoutLayout: true}
+    },
+    {
+      name: 'sign-up',
+      path: '/sign-up',
+      component: SignUp,
       meta: { omitAuth: true, withoutLayout: true}
     },
     {
