@@ -23,6 +23,14 @@ Vue.use(Vuetify, {
   }
 });
 
+import 'dayspan-vuetify/dist/lib/dayspan-vuetify.min.css'
+import DaySpanVuetify from 'dayspan-vuetify'
+Vue.use( DaySpanVuetify, {
+  methods: {
+    getDefaultEventColor: () => '#32aaf0'
+  }
+});
+
 import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
 Vue.use(VuetifyGoogleAutocomplete, {
   apiKey: 'AIzaSyCKkKPRpaUIu4AyAl2Nh67bnvS1_5AmvmQ'

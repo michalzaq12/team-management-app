@@ -33,6 +33,11 @@ export default new Router({
       component: TeamList
     },
     {
+      path: '/calendar',
+      name: 'calendar',
+      component: Calendar
+    },
+    {
       path: '/team-search',
       name: 'team-search',
       component: TeamSearch
