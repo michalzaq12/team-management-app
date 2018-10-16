@@ -1,8 +1,8 @@
 <template>
     <div class="team-list">
-    
-    
-       
+
+
+
         <v-container grid-list-xl fluid>
             <v-layout wrap>
                 <v-flex xs12 sm4>
@@ -24,14 +24,14 @@
                 </v-flex>
             </v-layout>
         </v-container>
-    
+
         <v-container grid-list-xs text-xs-center>
             <v-layout row wrap fill-height>
                 <team v-for="team in teams" :key="team.id" :team="team" />
             </v-layout>
         </v-container>
-    
-        
+
+
     </div>
 </template>
 
@@ -78,7 +78,7 @@
                     this.teams = data.data;
                     this.pageCount = data.pagination.page_count;
                     //this.$eventBus.$emit('loading', false);
-                })
+                }).finally(() => this.$eventBus.$emit('loading', false))
            },
            getAddressData(addressData, placeResultData) {
                 this.terms.lat = addressData ? addressData.latitude : null,
@@ -96,7 +96,7 @@
     .team-list {
         width: 100%;
     }
-    
+
     .toolbar-wrapper {
         display: flex;
         //justify-content: center;
@@ -105,7 +105,7 @@
             width: 30%;
         }
     }
-    
+
     .wrapper {
         display: flex;
         flex-wrap: wrap;
