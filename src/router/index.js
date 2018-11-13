@@ -7,6 +7,7 @@ import TeamSearch from '@/pages/TeamSearch'
 import AccountActivation from '@/pages/AccountActivation'
 import SignUp from '@/pages/SignUp';
 import Calendar from '@/pages/Calendar';
+import TeamPage from '@/pages/team/Index';
 
 Vue.use(Router);
 
@@ -39,6 +40,11 @@ export default new Router({
       path: '/teams',
       name: 'team-list',
       component: TeamList
+    },
+    {
+      path: '/teams/:teamId',
+      name: 'team-page',
+      component: TeamPage
     },
     {
       path: '/calendar',
