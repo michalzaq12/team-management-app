@@ -1,48 +1,84 @@
 <template>
-  <transition name="fade" appear>
-  <div id="wrapper">
-    <div id="login-form">
-      <img id="logo" src="http://via.placeholder.com/150x150">
+  <startup-layout>
+    <v-loading :active="isLoading"/>
+    <v-form v-model="valid" @keyup.enter.native="signup">
 
-      <v-form v-model="valid" @keyup.enter.native="signup">
+      <v-text-field color="demko" v-model="form.first_name"  label="Name"
+                    :counter="30" prepend-icon="account_box" required />
 
-        <v-text-field color="demko" v-model="form.first_name"  label="Name" required></v-text-field>
+      <v-text-field color="demko" v-model="form.last_name" label="Surname"
+                    :counter="30" prepend-icon="account_box" required />
 
-        <v-text-field color="demko" v-model="form.last_name" label="Surname" required></v-text-field>
+      <v-dialog
+        persistent
+        v-model="modal"
+        lazy
+        full-width
+        width="290px"
+      >
+        <v-text-field
+          color="demko"
+          slot="activator"
+          label="Date of birth"
+          prepend-icon="event"
+          v-model="form.born_date"
+          readonly
+        ></v-text-field>
+        <v-date-picker actions color="demko"
+                       @input="form.born_date = parseDate($event)"
+                       ref="pickerInDialog" :max="maxDate" :min="minDate" :locale="$i18n.locale">
+          <template>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn flat @click.stop="form.born_date = null; modal = false">Cancel</v-btn>
+              <v-btn flat color="demko" @click.stop="modal = false">OK</v-btn>
+            </v-card-actions>
+          </template>
+        </v-date-picker>
+      </v-dialog>
 
-        <v-text-field color="demko" v-model="form.email" :rules="emailRules" label="E-mail" required></v-text-field>
+      <v-text-field color="demko" v-model="form.email" :rules="emailRules" label="E-mail" required />
 
-        <v-text-field color="demko" ref="password" v-model="form.password"
-                      :append-icon="showPassword ? 'visibility_off' : 'visibility'"
-                      :type="showPassword ? 'text' : 'password'"
-                      @click:append="showPassword = !showPassword"
-                      :rules="passwordRules" label="Password" required />
+      <v-text-field color="demko" ref="password" v-model="form.password"
+                    :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+                    :type="showPassword ? 'text' : 'password'"
+                    @click:append="showPassword = !showPassword"
+                    :rules="passwordRules" label="Password" required />
 
-        <v-text-field color="demko" type="password" @input="validateRepeatedPassword"
-                      :error-messages="passwordRepeatHint" :error="passwordRepeatError" label="Repeat password" required />
-      </v-form>
+      <v-text-field color="demko" type="password" @input="validateRepeatedPassword"
+                    :append-icon="showRepeatedPassword ? 'visibility_off' : 'visibility'"
+                    :type="showRepeatedPassword ? 'text' : 'password'"
+                    @click:append="showRepeatedPassword = !showRepeatedPassword"
+                    :error-messages="passwordRepeatHint" :error="passwordRepeatError" label="Repeat password" required />
+    </v-form>
 
-      <div class="text-xs-center">
-        <v-btn round color="demko" class="font-weight-bold white--text register-button" @click="signup">Zarejestruj się</v-btn>
-      </div>
-
+    <div class="text-xs-center">
+      <v-btn round color="demko" class="font-weight-bold white--text register-button" outline @click="signup">Zarejestruj się</v-btn>
     </div>
-  </div>
-  </transition>
+  </startup-layout>
 </template>
 
 <script>
+  import moment from 'moment';
+  import StartupLayout from './StartupLayout';
   export default {
     name: 'sign-up',
+    components: {StartupLayout},
     data: () => ({
+      isLoading: false,
       valid: false,
+      modal: false,
+      minDate: moment().subtract(100, 'years').format('YYYY-MM-DD'),
+      maxDate: moment().format('YYYY-MM-DD'),
       form: {
         first_name: '',
         last_name: '',
+        born_date: null,
         email: '',
         password: ''
       },
       showPassword: false,
+      showRepeatedPassword: false,
       passwordRepeatError: false,
       passwordRepeatHint: '',
       emailRules: [
@@ -53,15 +89,21 @@
         v => !!v || 'Password is required'
       ]
     }),
+    watch: {
+      modal (value) {
+        value && this.$nextTick(() => this.$refs.pickerInDialog.activePicker = 'YEAR')
+      }
+    },
     methods: {
       signup(){
-        this.$eventBus.$emit('loading', true);
+        if(!this.valid) return;
+        this.isLoading = true;
         this.$http.post('/users', this.form)
           .then(() => {
             this.$router.push({name: 'login'});
             this.$eventBus.$emit('info', 'Confirmation mail was send to ' + this.form.email)
           })
-          .finally(() => this.$eventBus.$emit('loading', false));
+          .finally(() => this.isLoading = false);
       },
       validateRepeatedPassword(v){
         if(v !== this.form.password) {
@@ -71,6 +113,9 @@
           this.passwordRepeatError = false;
           this.passwordRepeatHint = '';
         }
+      },
+      parseDate(date){
+        return moment(date).format('DD-MM-YYYY');
       }
     }
   }
@@ -79,49 +124,8 @@
 
 
 <style lang="scss" scoped>
-  .slide-up-enter-active,
-  .slide-up-leave-active {
-    transition: all 1.5s
-  }
-
-  .slide-up-enter,
-  .slide-up-leave-to
-    /* .fade-leave-active in <2.1.8 */
-
-  {
-    opacity: 0;
-    bottom: 20% !important;
-  }
-
-
-  #wrapper {
-    height: 100vh;
-    width: 100vw;
-  }
-
-  #login-form {
-    width: 400px;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    text-align: center
-  }
-
-  #logo {
-    width: 50%;
-    margin-bottom: 30px;
-  }
-
-  .login-button {
-    margin: 30px 0;
-    width: 100%;
-  }
-
   .register-button {
-    margin: 0;
+    margin: 15px 0 0 0;
     width: 100%;
   }
 </style>
