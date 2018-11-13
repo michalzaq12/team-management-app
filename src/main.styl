@@ -1,0 +1,162 @@
+$scale = 0.67
+
+@import '~vuetify/src/stylus/settings/_variables'
+
+//Base
+$font-size-root *= $scale
+$line-height-root *= $scale
+
+
+//Button
+$button-border-radius *= $scale
+$button-height *= $scale
+$button-font-size *= $scale
+$button-margin-y *= $scale
+$button-margin-x *= $scale
+$button-min-width *= $scale
+//$button-small-padding := 0 8px
+//$button-padding := 0 16px
+//$button-large-padding := 0 32px
+$button-small-padding*= $scale
+$button-padding *= $scale
+$button-large-padding *= $scale
+
+$button-small-height *= $scale
+$button-small-font-size *= $scale
+
+$button-large-height *= $scale
+$button-large-font-size *= $scale
+$button-floating-width *= $scale
+$button-floating-icon-height *= $scale
+$button-floating-icon-width *= $scale
+$button-floating-small-width *= $scale
+$button-floating-large-width *= $scale
+$button-floating-small-icon-width *= $scale
+$button-floating-large-icon-width *= $scale
+
+// Toolbar
+$toolbar-height *= $scale
+$toolbar-item-padding *= $scale
+$toolbar-padding-y *= $scale
+$toolbar-padding-x *= $scale
+
+
+// Inputs
+$input-top-spacing := 16px * $scale
+$text-field-active-label-height := 12px * $scale
+
+// Headings
+// ============================================================
+$heading-font-family := $body-font-family
+$headings = {
+  h1: { size: $headings.h1.size * $scale, weight: 300, line-height: 1, letter-spacing: -.04em, font-family: $heading-font-family },
+  h2: { size: $headings.h2.size * $scale, weight: 400, line-height: 1.35, letter-spacing: -.02em, font-family: $heading-font-family },
+  h3: { size: $headings.h3.size * $scale, weight: 400, line-height: 48px, letter-spacing: normal, font-family: $heading-font-family },
+  h4: { size: $headings.h4.size * $scale, weight: 400, line-height: 40px, letter-spacing: normal, font-family: $heading-font-family },
+  h5: { size: $headings.h5.size * $scale, weight: 400, line-height: 32px, letter-spacing: normal, font-family: $heading-font-family },
+  h6: { size: $headings.h6.size * $scale, weight: 500, line-height: 1, letter-spacing: .02em, font-family: $heading-font-family },
+  subheading: { size: $headings.subheading.size * $scale, weight: 400 },
+  body-2: { size: $headings.body-2.size * $scale, weight: 500 },
+  body-1: { size: $headings.body-1.size * $scale, weight: 400 },
+  caption: { size: $headings.caption.size * $scale, weight: 400 },
+  button: { size: $headings.button.size * $scale, weight: 500 }
+}
+
+/** Lists */
+// List fonts and weights
+$list-tile-font-size := $headings.subheading.size // 16px - the mdc scss uses subheading to configure like this
+$list-tile-font-weight := $headings.subheading.weight // 400
+
+$list-action-text-font-size := 12px // this is for the stacked actions
+$list-action-text-font-color := $grey.base
+
+$list-sub-title-font-size := ($list-tile-font-size - 2px) // 14px
+
+$subheader-height-font-size := ($list-tile-font-size - 2px) // 14px
+$subheader-font-weight := $font-weights.medium // 500
+
+
+// List spacing
+$list-left-padding *= $scale
+$list-right-padding *= $scale
+$list-top-padding *= $scale
+$list-bottom-padding *= $scale
+
+$list-item-right-margin *= $scale
+$list-item-left-padding *= $scale
+$list-item-avatar-triple-margin-top *= $scale
+$list-item-single-height *= $scale
+$list-item-double-height *= $scale
+$list-item-triple-height *= $scale
+$list-item-avatar-single-height *= $scale
+
+$list-item-dense-icon-font-size *= $scale
+$list-item-dense-avatar-triple-margin-top *= $scale
+$list-item-dense-avatar-height *= $scale
+
+// Navigation drawer
+$navigation-drawer-item-font-size *= $scale
+
+// Chip
+$chip-border-radius *= $scale
+$chip-close-margin := 0 2px 0 8px
+$chip-font-size *= $scale
+$chip-label-border-radius := $card-border-radius
+$chip-icon-font-size *= $scale
+$chip-padding := 0 12px
+$chip-removeable-padding := 0 4px 0 12px
+$chip-outline-background := transparent !important
+$chip-outline-color := $grey.base
+$chip-height *= $scale
+$chip-margin *= $scale
+$chip-small-height *= $scale
+$chip-small-font-size *= $scale
+$chip-icon-offset *= $scale
+$chip-icon-negative-offset := -8px
+
+
+
+@import '~vuetify/src/stylus/settings/_theme'
+
+@import '~vuetify/src/stylus/main'
+
+.v-icon
+  font-size: 24px * $scale
+
+.v-card
+  &__title
+    padding: 16px * $scale
+    &--primary
+      padding-top: 24px * $scale
+
+  &__text
+    padding: 16px * $scale
+  &__actions
+    padding: 8px * $scale
+
+
+.v-messages
+  font-size: 12px * $scale
+  min-height: 12px * $scale
+
+.v-label
+  font-size: 16px * $scale
+  line-height: 1 * $scale
+  min-height: 8px * $scale
+
+.v-input
+  font-size: 16px * $scale
+
+  input
+    max-height: 32px * $scale
+  .v-label
+    height: 20px * $scale
+    line-height: 20px * $scale
+  &__append-outer
+    margin-left: 9px * $scale
+  &__prepend-outer
+    margin-right: 9px * $scale
+  &__icon
+    height: 24px * $scale
+    min-width: 24px * $scale
+    width: 24px * $scale

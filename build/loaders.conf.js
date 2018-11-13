@@ -2,6 +2,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {resolve} = require('./utils');
 const monfy = require('monfy');
 
+const config = require('../config');
 
 let loaders = [
     {
@@ -30,6 +31,10 @@ let loaders = [
       }
     },
     {
+      test: /\.styl$/,
+      loader: ['style-loader', 'css-loader', 'stylus-loader']
+    },
+    {
       test: /\.js$/,
       loader__dev: ['babel-loader', 'webpack-module-hot-accept'],
       loader: ['babel-loader'],
@@ -42,6 +47,7 @@ let loaders = [
       // exclude: resolve('node_modules'),
       include: resolve('src/assets'),
       options: {
+        publicPath: config.build.publicPath,
         limit: 10000,
         name: 'img/[name].[hash:7].[ext]'
       }
@@ -52,6 +58,7 @@ let loaders = [
       // exclude: resolve('node_modules'),
       include: resolve('src/assets'),
       options: {
+        publicPath: config.build.publicPath,
         limit: 10000,
         name: 'media/[name].[hash:7].[ext]'
       }
