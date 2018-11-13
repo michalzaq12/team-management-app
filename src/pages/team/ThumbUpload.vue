@@ -1,26 +1,20 @@
 <template>
-  <v-layout align-center justify-space-between column class="upload-container">
-    <div>
-      <file-upload class="white--text v-btn v-btn--round demko upload-button" :post-action="postAction" :put-action="putAction" :extensions="extensions" :accept="accept" :size="size || 0" :headers="headers" :drop="drop" :drop-directory="dropDirectory" :add-index="addIndex"
+      <file-upload :class="{'white--text v-btn upload-button v-btn--round demko': !raw}" :post-action="postAction" :put-action="putAction" :extensions="extensions" :accept="accept" :size="size || 0" :headers="headers" :drop="drop" :drop-directory="dropDirectory" :add-index="addIndex"
         v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
-        {{$t('button.selectFile')}}
-        <v-icon right dark>cloud_upload</v-icon>
+        <slot/>
       </file-upload>
-    </div>
-    <div class="elevation-1 thumb"><img v-if="files[0] && files[0].thumb" :src="files[0].thumb" width="auto" height="100" /></div>
-  </v-layout>
 </template>
 
 <style lang="scss" scoped>
   .upload-container {
     max-height: 200px;
   }
-  
+
   .upload-button {
     cursor: pointer;
     display: inline-flex;
   }
-  
+
   .thumb {
     margin-top: 30px;
   }
@@ -34,13 +28,21 @@
     components: {
       FileUpload,
     },
+    props:{
+      raw: {
+        type: Boolean,
+        default: false
+      },
+      icon:{
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
       return {
         files: [],
-        accept: 'image/png,image/gif,image/jpeg,image/webp',
-        extensions: 'gif,jpg,jpeg,png,webp',
-        // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],
-        // extensions: /\.(gif|jpe?g|png|webp)$/i,
+        accept: 'image/png,image/jpeg',
+        extensions: 'jpg,jpeg,png',
         minSize: 1024,
         size: 1024 * 1024 * 10,
         drop: true,
@@ -148,7 +150,7 @@
         }
         // Automatically activate upload
         if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
-          console.log(newFile)
+          this.$emit('file-selected');
           if (this.uploadAuto && !this.$refs.upload.active) {
             this.$refs.upload.active = true
           }
@@ -160,12 +162,12 @@
       reset() {
         this.files = [];
       },
-      send(url) {
+      send(url, method = 'post') {
         if (this.files.length === 0) return Promise.resolve();
         console.log(this.files[0]);
         const formData = new FormData();
         formData.append('file', this.files[0].file);
-        return this.$http.post(url, formData)
+        return this.$http[method](url, formData)
       }
     }
   }
