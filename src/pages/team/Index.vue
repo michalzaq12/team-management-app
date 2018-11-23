@@ -13,14 +13,11 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn icon>
-              <thumbnail-upload-button ref="upload" :raw="true"
-                                       @file-selected="updateThumbnail">
-
-                  <v-icon>create</v-icon>
-
-              </thumbnail-upload-button>
-              </v-btn>
+              <a class="v-btn v-btn--icon theme--light activator">
+                <thumbnail-upload-button ref="upload" :raw="true" @file-selected="updateThumbnail">
+                    <v-icon>create</v-icon>
+                </thumbnail-upload-button>
+              </a>
               <v-btn icon @click="deleteThumbnail">
                 <v-icon>clear</v-icon>
               </v-btn>
@@ -231,7 +228,7 @@
       & .team-thumbnail{
         & img{
           margin: 40px;
-          max-height: 200px;
+          max-height: 150px;
         }
       }
     }
