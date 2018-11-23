@@ -114,7 +114,10 @@ $chip-small-font-size *= $scale
 $chip-icon-offset *= $scale
 $chip-icon-negative-offset := -8px
 
-
+//Badges
+$badge-height *= $scale
+$badge-width *= $scale
+$badge-font-size *= $scale
 
 @import '~vuetify/src/stylus/settings/_theme'
 
@@ -160,3 +163,9 @@ $chip-icon-negative-offset := -8px
     height: 24px * $scale
     min-width: 24px * $scale
     width: 24px * $scale
+
+
+.v-tabs__container
+  height : 48px * $scale
+  &--icons-and-text
+    height: 72px * $scale

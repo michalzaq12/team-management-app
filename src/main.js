@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import './main.styl';
 import Vuetify from 'vuetify';
 
 import App from './App';
@@ -10,7 +11,7 @@ import './eventBus';
 
 
 import '@/assets/disciplines/style.css'
-import '@/assets/reset.css';
+// import '@/assets/reset.css';
 
 
 import colors from 'vuetify/es5/util/colors';
