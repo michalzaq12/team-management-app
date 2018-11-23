@@ -1,22 +1,22 @@
 <template>
     <v-stepper v-model="currentStep" :vertical="$vuetify.breakpoint.smAndUp" :alt-labels="$vuetify.breakpoint.xsOnly">
-    
+        <v-loading :active="isLoading" :is-full-page="true"/>
         <v-stepper-header v-if="$vuetify.breakpoint.xsOnly">
             <v-stepper-step :complete="currentStep > 1" step="1" color="demko">{{$t('global.teamName')}}</v-stepper-step>
-    
+
             <v-divider></v-divider>
-    
+
             <v-stepper-step :complete="currentStep > 2" step="2" color="demko">{{$t('global.discipline')}}</v-stepper-step>
-    
+
             <v-divider></v-divider>
-    
+
             <v-stepper-step :complete="currentStep > 3" step="3" color="demko">Lokalizacja</v-stepper-step>
-    
+
             <v-divider></v-divider>
-    
+
             <v-stepper-step step="4" color="demko">{{$t('global.thumbnail')}}</v-stepper-step>
         </v-stepper-header>
-    
+
         <v-stepper-step v-if="$vuetify.breakpoint.smAndUp" :complete="currentStep > 1" step="1" color="demko">{{$t('global.teamName')}}</v-stepper-step>
         <v-stepper-content step="1">
             <v-form v-model="valid.name" @submit.prevent="valid.name ? currentStep = 2 : false">
@@ -30,7 +30,7 @@
                 </div>
             </v-form>
         </v-stepper-content>
-    
+
         <v-stepper-step v-if="$vuetify.breakpoint.smAndUp" :complete="currentStep > 2" step="2" color="demko">{{$t('global.discipline')}}</v-stepper-step>
         <v-stepper-content step="2">
             <v-form v-model="valid.discipline" @submit.prevent="currentStep = 3">
@@ -46,10 +46,10 @@
                 </div>
             </v-form>
         </v-stepper-content>
-    
+
         <v-stepper-step v-if="$vuetify.breakpoint.smAndUp" :complete="currentStep > 3" step="3" color="demko">Lokalizacja</v-stepper-step>
         <v-stepper-content step="3">
-    
+
             <div class="mb-5">
                 <div class="text-xs-center headline font-weight-bold">Wybierz lokalizacje</div>
                 <vuetify-google-autocomplete id="map" ref="autocomplete" color="demko" append-icon="search" clearable required label="Nazwa miejscowości" types="(cities)" country="PL" @placechanged="getAddressData" />
@@ -58,25 +58,33 @@
                 <v-btn flat @click="currentStep = 2">{{$t('button.cancel')}}</v-btn>
                 <v-btn :disabled="!(form.location !== null && form.location.name !== null)" color="demko" class="white--text" @click="currentStep = 4">{{$t('button.continue')}}</v-btn>
             </div>
-    
+
         </v-stepper-content>
-    
+
         <v-stepper-step v-if="$vuetify.breakpoint.smAndUp" :complete="currentStep > 4" step="4" color="demko">{{$t('global.thumbnail')}}</v-stepper-step>
         <v-stepper-content step="4">
             <v-card class="mb-3 pb-5">
                 <div class="pa-2 text-xs-center headline font-weight-bold">{{$t('addTeamForm.chooseThumbnail')}}</div>
                 <div class="pa-2 text-xs-center subheading font-weight-normal">{{$t('global.canSkip')}}</div>
                 <div class="pa-2 text-xs-center">
-                    <thumbnail-upload-button ref="upload" />
+
+                  <v-layout align-center justify-space-between column class="upload-container">
+                    <thumbnail-upload-button ref="upload">
+                      {{$t('button.selectFile')}}
+                      <v-icon right dark>cloud_upload</v-icon>
+                    </thumbnail-upload-button>
+                    <div class="elevation-1 thumb"><img v-if="$refs.upload && $refs.upload.files[0] && $refs.upload.files[0].thumb" :src="$refs.upload.files[0].thumb" width="auto" height="100" /></div>
+                  </v-layout>
+
                 </div>
             </v-card>
             <div class="text-xs-center">
                 <v-btn flat @click="currentStep = 3">{{$t('button.cancel')}}</v-btn>
                 <v-btn color="demko" class="white--text" @click="submit()">{{$t('button.continue')}}</v-btn>
             </div>
-    
+
         </v-stepper-content>
-    
+
     </v-stepper>
 </template>
 
@@ -94,6 +102,7 @@
         },
         data() {
             return {
+                isLoading: false,
                 form: {
                     name: null,
                     discipline: null,
@@ -138,9 +147,9 @@
                 ]
             }
         },
-        destroyed() { 
+        destroyed() {
             // https://github.com/MadimetjaShika/vuetify-google-autocomplete/issues/56
-            window.vgaMapState.initMap = true 
+            window.vgaMapState.initMap = true
         },
         methods: {
             getAddressData(addressData, placeResultData) {
@@ -161,17 +170,17 @@
                     this.$emit('update:isOpen', false);
             },
             submit() {
-                //this.$parent.isLoading = true;
-    
+                this.isLoading = true;
                 this.$http.post('/teams', this.form).then(({data}) => {
                     return this.$refs.upload.send(`/teams/${data.id}/thumbnail`)
                 }).then(() => {
                     this.$parent.$parent.fetchTeams();
                 }).finally(() => {
                     this.close();
+                    this.isLoading = false;
                 })
-    
-                
+
+
             }
         }
     }
