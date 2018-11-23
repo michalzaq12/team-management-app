@@ -9,13 +9,11 @@ const state = {
 
 const getters = {
   userId (state) {
-    return state.user.id
-  },
-  userFullName (state){
-    return state.user.name + ' ' + state.user.surname
+    //TODO
+    return state.user.sub;
   },
   isAuthenticated(state) {
-    return state.isAuthenticated
+    return state.isAuthenticated;
   }
 };
 
@@ -28,6 +26,7 @@ const actions = {
       })
   },
   logout ({commit}) {
+    //TODO
     // return apiService.delete('/session').then(() => {
     //   commit('purgeAuth');
     // })
