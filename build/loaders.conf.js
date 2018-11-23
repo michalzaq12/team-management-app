@@ -16,7 +16,7 @@ let loaders = [
     {
       test: /\.vue$/,
       loader: 'vue-loader?sourceMap',
-      include: [resolve('src'), resolve('node_modules/vue2-google-maps'), resolve('node_modules/dayspan-vuetify')],
+      include: [resolve('src'), resolve('node_modules/vue2-google-maps'), resolve('node_modules/vue-fullcalendar')],
       options:{
         cssModules: {
           localIdentName: '[path]-[name]-[local]',
