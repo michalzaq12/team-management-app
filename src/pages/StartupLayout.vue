@@ -32,17 +32,12 @@
   }
 </script>
 
-<style>
-  html{
-    overflow-y: hidden;
-  }
-</style>
-
 
 <style lang="scss" scoped>
   .main-container{
     display: flex;
     height: 100vh;
+    overflow-y: hidden;
   }
 
   .photo{

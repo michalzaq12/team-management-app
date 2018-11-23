@@ -2,11 +2,11 @@
 <div>
     <app-header v-model="drawer"/>
     <app-menu v-model="drawer"/>
-     <v-content class="main-container">
-         <v-container fluid fill-height :class="{'pa-0': $vuetify.breakpoint.xsOnly}">
-             <v-layout justify-center align-center>
-        <slot />
-        </v-layout>
+     <v-content>
+         <v-container fluid fill-height :class="{'pa-0': $vuetify.breakpoint.xsOnly}" class="app-main-container">
+            <v-layout justify-center align-start>
+              <slot />
+            </v-layout>
         </v-container>
     </v-content>
 </div>
@@ -31,9 +31,14 @@ export default {
 }
 </script>
 
-
 <style>
-  .main-container{
-    min-height: 100vh;
+  html{
+    overflow-y: auto;
+  }
+</style>
+
+<style lang="scss">
+  .app-main-container{
+    min-height: $app-height;
   }
 </style>
