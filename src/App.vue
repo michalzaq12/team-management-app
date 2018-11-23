@@ -4,7 +4,6 @@
       <router-view></router-view>
     </basic-layout>
     <router-view v-else></router-view>
-    <loading :loading="isLoading" />
       <v-snackbar v-model="snackbar" :color="color" :timeout="5000" :bottom="true" :right="true">
         {{ errorText }}
         <v-btn dark flat @click="snackbar = false">
@@ -17,7 +16,9 @@
 <script>
   import BasicLayout from '@/BasicLayout';
   import Vue from 'vue';
-  import Loading from '@/components/Loading';
+  import Loading from '@/components/Loading2';
+
+  Vue.component('v-loading', Loading);
 
   export default {
     name: 'app',
@@ -34,7 +35,6 @@
       }
     },
     created() {
-      this.$eventBus.$on('loading', state => this.isLoading = state);
 
       this.$eventBus.$on('error', msg => {
         this.errorText = msg;
@@ -54,7 +54,7 @@
 
 
 
-<style>
+<style lang="scss">
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 1s
