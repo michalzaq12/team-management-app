@@ -8,6 +8,7 @@ import AccountActivation from '@/pages/AccountActivation'
 import SignUp from '@/pages/SignUp';
 import Calendar from '@/pages/Calendar';
 import TeamPage from '@/pages/team/Index';
+import UserProfile from '@/pages/Profile';
 
 Vue.use(Router);
 
@@ -55,6 +56,11 @@ export default new Router({
       path: '/team-search',
       name: 'team-search',
       component: TeamSearch
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: UserProfile
     }
   ]
 });
