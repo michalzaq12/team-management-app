@@ -22,4 +22,4 @@ selenium-debug.log
 Thumbs.db
 
 # Generated Files
-dist/
+# dist/
