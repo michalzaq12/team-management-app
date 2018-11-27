@@ -1,0 +1,133 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url(../fonts/icomoon.2bf516b.eot);
+  src:  url(../fonts/icomoon.2bf516b.eot#iefix) format('embedded-opentype'),
+    url(../fonts/icomoon.758f84a.ttf) format('truetype'),
+    url(../fonts/icomoon.3797b83.woff) format('woff'),
+    url(/web/img/icomoon.1370271.svg#icomoon) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bowling-pin-ball:before {
+  content: "\E906";
+}
+.icon-bowling-pin-ball2:before {
+  content: "\E907";
+}
+.icon-volleyball-water:before {
+  content: "\E908";
+}
+.icon-volleyball-water2:before {
+  content: "\E909";
+}
+.icon-volleyball2:before {
+  content: "\E90A";
+}
+.icon-basketball-hoop2:before {
+  content: "\E90B";
+}
+.icon-baseball-set:before {
+  content: "\E90C";
+}
+.icon-baseball-set2:before {
+  content: "\E90D";
+}
+.icon-soccer-ball2:before {
+  content: "\E90E";
+}
+.icon-billiard-ball:before {
+  content: "\E90F";
+}
+.icon-billiard-ball2:before {
+  content: "\E910";
+}
+.icon-tennis-ball2:before {
+  content: "\E911";
+}
+.icon-volleyball3:before {
+  content: "\E912";
+}
+.icon-basketball-hoop3:before {
+  content: "\E913";
+}
+.icon-soccer-ball3:before {
+  content: "\E914";
+}
+.icon-tennis-ball3:before {
+  content: "\E915";
+}
+.icon-tennis-ball4:before {
+  content: "\E916";
+}
+.icon-tennis-ball5:before {
+  content: "\E917";
+}
+.icon-bowling-ball:before {
+  content: "\E918";
+}
+.icon-bowling-ball2:before {
+  content: "\E919";
+}
+.icon-basketball3:before {
+  content: "\E91A";
+}
+.icon-basketball4:before {
+  content: "\E91B";
+}
+.icon-baseball:before {
+  content: "\E91C";
+}
+.icon-baseball2:before {
+  content: "\E91D";
+}
+.icon-football:before {
+  content: "\E91E";
+}
+.icon-football2:before {
+  content: "\E91F";
+}
+.icon-football3:before {
+  content: "\E920";
+}
+.icon-football4:before {
+  content: "\E921";
+}
+.icon-basketball5:before {
+  content: "\E922";
+}
+.icon-basketball6:before {
+  content: "\E923";
+}
+.icon-basketball-hoop:before {
+  content: "\E904";
+}
+.icon-basketball2:before {
+  content: "\E905";
+}
+.icon-tennis-ball:before {
+  content: "\E903";
+}
+.icon-basketball:before {
+  content: "\E900";
+}
+.icon-soccer-ball:before {
+  content: "\E901";
+}
+.icon-volleyball:before {
+  content: "\E902";
+}
