@@ -167,7 +167,9 @@
         console.log(this.files[0]);
         const formData = new FormData();
         formData.append('file', this.files[0].file);
-        return this.$http[method](url, formData)
+        return this.$http[method](url, formData, {
+          timeout: 5000
+        })
       }
     }
   }
