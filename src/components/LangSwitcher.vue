@@ -1,12 +1,12 @@
 <template>
     <div class="text-xs-center">
-        <v-menu offset-y left>
+        <v-menu offset-y left transition="slide-y-transition">
             <v-btn slot="activator" dark icon>
                 <v-icon>language</v-icon>
             </v-btn>
             <v-list>
                 <v-list-tile v-for="(item, index) in langs" :key="index" @click="$i18n.locale = item.locale">
-    
+
                     <v-list-tile-avatar>
                         <img src="@/assets/flags/blank.gif" :class="`flag flag-${item.flag}`"/>
                     </v-list-tile-avatar>
@@ -45,6 +45,6 @@
 
 <style>
     /* https://www.flag-sprites.com/ -> GoSquared flat large   32x32 */
-    
+
     @import '~@/assets/flags/flags.css';
 </style>

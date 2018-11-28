@@ -3,11 +3,9 @@
         <v-loading :active="isLoading"/>
 
         <v-container grid-list-xs text-xs-center class="card">
-            <!--<v-layout row wrap fill-height>-->
-              <transition-group name="card" tag="v-layout" class="row wrap fill-height" appear>
-                <team class="card" v-for="team in teams" :key="team.id" :team="team" :allowLeave="true" @leave="leaveTeamConfirmation(team)"/>
-              </transition-group>
-            <!--</v-layout>-->
+          <transition-group name="scale" tag="v-layout" class="row wrap fill-height" appear>
+            <team v-for="team in teams" :key="team.id" :team="team" :allowLeave="true" @leave="leaveTeamConfirmation(team)"/>
+          </transition-group>
         </v-container>
 
 
@@ -80,8 +78,8 @@
                     const promises = [];
 
                     for(const el of memberships){
-                      const teamPromise = this.$http.get(`/teams/${el.team_id}`).then(({data: team}) => {
-                        this.teams.push({membership_id: el.id, ...team});
+                      const teamPromise = this.$http.get(`/teams/${el.team.id}`).then(({data: team}) => {
+                        this.teams.push({membership_id: el.id, confirmed: el.confirmed, ...team});
                       });
                       promises.push(teamPromise);
                     }
@@ -109,23 +107,6 @@
 
 
 <style lang="scss" scoped>
-  .card-enter-active{
-    transition: all 500ms ease-out;
-  }
-
-  .card-enter
-  {
-    opacity: 0;
-    transform: scale(0);
-  }
-
-  .card-enter-to {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-
-
     .team-list {
         width: 100%;
     }
