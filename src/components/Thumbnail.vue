@@ -10,7 +10,7 @@
 
   <img v-else-if="team && team.thumbnail" :src="apiUrl + team.thumbnail" :height="size + 'px'" />
   <img v-else-if="user && user.thumbnail" :src="apiUrl + user.thumbnail" :height="size + 'px'" />
-  <div v-else :style="style">
+  <div v-else :style="style" class="placeholder">
     <v-icon x-large>insert_photo</v-icon>
   </div>
 
@@ -52,3 +52,11 @@
         }
     }
 </script>
+
+<style scoped>
+  .placeholder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
