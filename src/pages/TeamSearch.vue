@@ -30,10 +30,10 @@
         </v-container>
 
         <v-container grid-list-xs text-xs-center>
-            <v-layout row wrap fill-height>
-              <v-loading :is-full-page="false" :active="isLoading" />
+            <v-loading :is-full-page="false" :active="isLoading" />
+            <transition-group name="scale" tag="v-layout" class="row wrap fill-height" appear>
                 <team v-for="team in teams" :key="team.id" :team="team" :allowJoin="true" @join="joinToTeam"/>
-            </v-layout>
+            </transition-group>
         </v-container>
 
       <div class="text-xs-center mb-3" v-if="!isLoading">
