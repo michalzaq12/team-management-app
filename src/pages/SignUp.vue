@@ -9,33 +9,7 @@
       <v-text-field color="demko" v-model="form.last_name" label="Surname"
                     :counter="30" prepend-icon="account_box" required />
 
-      <v-dialog
-        persistent
-        v-model="modal"
-        lazy
-        full-width
-        width="290px"
-      >
-        <v-text-field
-          color="demko"
-          slot="activator"
-          label="Date of birth"
-          prepend-icon="event"
-          v-model="form.born_date"
-          readonly
-        ></v-text-field>
-        <v-date-picker actions color="demko"
-                       @input="form.born_date = parseDate($event)"
-                       ref="pickerInDialog" :max="maxDate" :min="minDate" :locale="$i18n.locale">
-          <template>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn flat @click.stop="form.born_date = null; modal = false">Cancel</v-btn>
-              <v-btn flat color="demko" @click.stop="modal = false">OK</v-btn>
-            </v-card-actions>
-          </template>
-        </v-date-picker>
-      </v-dialog>
+
 
       <v-text-field color="demko" v-model="form.email" :rules="emailRules" label="E-mail" required />
 
@@ -59,7 +33,6 @@
 </template>
 
 <script>
-  import moment from 'moment';
   import StartupLayout from './StartupLayout';
   export default {
     name: 'sign-up',
@@ -67,13 +40,9 @@
     data: () => ({
       isLoading: false,
       valid: false,
-      modal: false,
-      minDate: moment().subtract(100, 'years').format('YYYY-MM-DD'),
-      maxDate: moment().format('YYYY-MM-DD'),
       form: {
         first_name: '',
         last_name: '',
-        born_date: null,
         email: '',
         password: ''
       },
@@ -89,11 +58,6 @@
         v => !!v || 'Password is required'
       ]
     }),
-    watch: {
-      modal (value) {
-        value && this.$nextTick(() => this.$refs.pickerInDialog.activePicker = 'YEAR')
-      }
-    },
     methods: {
       signup(){
         if(!this.valid) return;
@@ -113,9 +77,6 @@
           this.passwordRepeatError = false;
           this.passwordRepeatHint = '';
         }
-      },
-      parseDate(date){
-        return moment(date).format('DD-MM-YYYY');
       }
     }
   }
