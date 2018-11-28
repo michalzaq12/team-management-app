@@ -15,7 +15,6 @@ export default {
   },
 
   setHeader () {
-    console.log('set Header')
     axios.defaults.headers.common['Authorization'] = `JWT ${authService.getToken()}`;
   },
 
