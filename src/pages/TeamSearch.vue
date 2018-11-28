@@ -9,7 +9,7 @@
                     <v-text-field color="demko" label="Nazwa drużyny" v-model="terms.name" prepend-icon="search"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm4>
-                    <vuetify-google-autocomplete id="map" ref="autocomplete" color="demko" prepend-icon="location_on" clearable required label="Nazwa miejscowości" types="(cities)" country="PL" @placechanged="getAddressData" />
+                  <autocomplete @place_changed="placeChanged" />
                 </v-flex>
                 <v-flex>
                     <v-slider v-model="terms.radius"
@@ -46,14 +46,17 @@
 
 <script>
     import Team from './team/Item';
+    import Autocomplete from '@/components/Autocomplete';
     export default {
         name: 'search-team',
         components: {
-            Team
+            Team,
+            Autocomplete
         },
         data() {
             return {
                 isLoading: false,
+                locationName: '',
                 terms:{
                     name: '',
                     lat: null,
@@ -77,7 +80,8 @@
         watch: {
             terms: {
                 handler(){
-                    this.fetchTeams();
+                  this.currentPage = 1;
+                  this.fetchTeams();
                 },
                 deep: true
             },
@@ -94,9 +98,9 @@
                     this.pageCount = data.pagination.page_count;
                 }).finally(() => this.isLoading = false)
            },
-           getAddressData(addressData, placeResultData) {
-                this.terms.lat = addressData ? addressData.latitude : null;
-                this.terms.lng = addressData ? addressData.longitude : null;
+           placeChanged(location) {
+                this.terms.lat = location.lat;
+                this.terms.lng = location.lng;
             },
             joinToTeam(id){
               this.isLoadingFull = true;
@@ -107,11 +111,7 @@
         },
         created() {
             this.fetchTeams();
-        },
-        destroyed() {
-          // https://github.com/MadimetjaShika/vuetify-google-autocomplete/issues/56
-          window.vgaMapState.initMap = true
-        },
+        }
     }
 </script>
 

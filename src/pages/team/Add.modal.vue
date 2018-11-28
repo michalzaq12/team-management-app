@@ -52,7 +52,8 @@
 
             <div class="mb-5">
                 <div class="text-xs-center headline font-weight-bold">Wybierz lokalizacje</div>
-                <vuetify-google-autocomplete id="map" ref="autocomplete" color="demko" append-icon="search" clearable required label="Nazwa miejscowości" types="(cities)" country="PL" @placechanged="getAddressData" />
+                <!--<vuetify-google-autocomplete id="map" ref="autocomplete" color="demko" append-icon="search" clearable required label="Nazwa miejscowości" types="(cities)" country="PL" @placechanged="getAddressData" />-->
+                <autocomplete @place_changed="placeChanged"/>
             </div>
             <div class="text-xs-center">
                 <v-btn flat @click="currentStep = 2">{{$t('button.cancel')}}</v-btn>
@@ -92,10 +93,12 @@
 
 <script>
     import ThumbnailUploadButton from './ThumbUpload';
+    import Autocomplete from '@/components/Autocomplete';
     export default {
         name: 'add-team-modal',
         components: {
-            ThumbnailUploadButton
+            ThumbnailUploadButton,
+            Autocomplete
         },
         props: {
             isOpen: Boolean
@@ -147,24 +150,13 @@
                 ]
             }
         },
-        destroyed() {
-            // https://github.com/MadimetjaShika/vuetify-google-autocomplete/issues/56
-            window.vgaMapState.initMap = true
-        },
         methods: {
-            getAddressData(addressData, placeResultData) {
-                if (addressData === null) return;
-                console.log(addressData);
-                this.form.location = {
-                    name: addressData.name,
-                    lat: addressData.latitude,
-                    lng: addressData.longitude
-                }
+            placeChanged(location) {
+              this.form.location = location
             },
             close(){
                     this.reset(this.form);
                     this.reset(this.valid, false);
-                    this.$refs.autocomplete.clear();
                     this.$refs.upload.reset();
                     this.currentStep = 1;
                     this.$emit('update:isOpen', false);
@@ -174,7 +166,7 @@
                 this.$http.post('/teams', this.form).then(({data}) => {
                     return this.$refs.upload.send(`/teams/${data.id}/thumbnail`)
                 }).then(() => {
-                    this.$parent.$parent.fetchTeams();
+                    // this.$parent.$parent.fetchTeams();
                 }).finally(() => {
                     this.close();
                     this.isLoading = false;
