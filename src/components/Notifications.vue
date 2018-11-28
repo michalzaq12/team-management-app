@@ -13,7 +13,7 @@
           @click="confirm(item)"
         >
           <v-list-tile-avatar v-if="item.data.sender.thumbnail">
-            <img :src="item.data.sender.thumbnail">
+            <img :src="apiUrl + item.data.sender.thumbnail">
           </v-list-tile-avatar>
 
           <v-list-tile-avatar v-else color="teal">
@@ -61,40 +61,29 @@
     >
       <v-card v-if="selectedItem != null">
         <v-toolbar dark color="teal">
-          <v-toolbar-title>Czy chcesz aby zawodnik {{selectedItem.data.sender.first_name}} dołączył do drużyny?</v-toolbar-title>
+          <v-toolbar-title>Czy chcesz aby {{selectedItem.data.sender.last_name}} dołączył do drużyny?</v-toolbar-title>
         </v-toolbar>
 
-        <!--<v-card-title class="headline"></v-card-title>-->
 
         <v-card-text>
           <v-layout justify-space-between align-center class="ma-2 mt-4 mb-4">
 
-            <div>
-              <v-avatar v-if="selectedItem.data.sender.thumbnail"  class="elevation-2">
-                <img :src="selectedItem.data.sender.thumbnail" >
-              </v-avatar>
-
-              <v-avatar v-else color="teal" class="elevation-2">
-                <span class="white--text headline">{{selectedItem.data.sender.first_name.charAt(0)}}</span>
-              </v-avatar>
-
-              <span>{{selectedItem.data.sender.first_name}} {{selectedItem.data.sender.last_name}}</span>
+            <div style="min-width: 100px">
+              <v-layout align-center justify-center column fill-height>
+                <v-thumbnail :user="selectedItem.data.sender" :avatar="true"/>
+                <div class="mt-2">{{selectedItem.data.sender.first_name}} {{selectedItem.data.sender.last_name}}</div>
+              </v-layout>
             </div>
 
             <div>
               <v-icon x-large>forward</v-icon>
             </div>
 
-            <div>
-              <v-avatar v-if="selectedItem.data.team.thumbnail" class="elevation-2">
-                <img :src="selectedItem.data.team.thumbnail">
-              </v-avatar>
-
-              <v-avatar v-else color="teal" class="elevation-2">
-                <span class="white--text headline">{{selectedItem.data.team.name.charAt(0)}}</span>
-              </v-avatar>
-
-              <span>{{selectedItem.data.team.name}}</span>
+            <div style="min-width: 100px">
+              <v-layout align-center justify-center column fill-height>
+                <v-thumbnail :team="selectedItem.data.team" />
+                <div class="mt-2">{{selectedItem.data.team.name}}</div>
+              </v-layout>
             </div>
 
           </v-layout>
@@ -118,11 +107,9 @@
 
 <script>
   import moment from 'moment';
-  import Loading from "./Loading";
 
     export default {
-        name: "Notifications",
-      components: {Loading},
+      name: "notifications",
       props: {
           notifications: {
             type: Array,
@@ -156,7 +143,6 @@
           sendConfirmation(){
             this.isLoading = true;
             this.$http.post(`/team-memberships/${this.selectedItem.data.team_membership.id}/confirm`).then(() => {
-              console.log('ok');
               this.dialog = false;
             }).finally(() => this.isLoading = false);
           }
@@ -164,6 +150,3 @@
     }
 </script>
 
-<style scoped>
-
-</style>
