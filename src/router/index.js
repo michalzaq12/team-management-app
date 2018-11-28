@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import helpers from './helpers';
+
+
 import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import TeamList from '@/pages/TeamsList'
@@ -12,7 +15,7 @@ import UserProfile from '@/pages/Profile';
 
 Vue.use(Router);
 
-export default new Router({
+const router =  new Router({
   routes: [
     {
       path: '/',
@@ -64,3 +67,11 @@ export default new Router({
     }
   ]
 });
+
+
+Object.entries(helpers).forEach(([key, func]) => {
+  router[key](func);
+});
+
+
+export default router;
