@@ -1,9 +1,8 @@
 <template>
-    <v-flex xs6 sm4 md3 lg3 xl2 style="z-index: 0; cursor: pointer">
+    <v-flex xs12 sm6 md4 lg3 xl2 style="z-index: 0; cursor: pointer">
       <v-hover>
         <v-card slot-scope="{ hover }"
-                :disabled="team.confirmed === false"
-                :class="`elevation-${hover ? 12 : 2}`" class="item" style="z-index: 0"
+                :class="[`elevation-${hover ? 12 : 2}`, team.confirmed === false ? 'inactive' : '']" class="item" style="z-index: 0"
                 @click.native="$router.push({name: 'team-page', params: {teamId: team.id}})">
 
 
@@ -28,8 +27,6 @@
             </v-card-title>
 
 
-          <!--<v-divider light></v-divider>-->
-
           <v-card-actions class="grey--text">
 
 
@@ -52,23 +49,6 @@
             </v-btn>
 
           </v-card-actions>
-
-            <!--<v-card-actions>-->
-                <!--<v-flex align-content-center align-end>-->
-                    <!--<div class="text-xs-center">-->
-                        <!--<v-chip outline color="demko">-->
-                            <!--<span v-if="team.discipline === 'football'" class="icon-soccer-ball3"></span>-->
-                            <!--<span v-else-if="team.discipline === 'basketball'" class="icon-basketball6"></span>-->
-                            <!--<span v-else-if="team.discipline === 'volleyball'" class="icon-volleyball"></span>-->
-                            <!--<span v-else class="icon-baseball2"></span>-->
-
-                            <!--<span class="font-weight-bold">{{$t(`discipline.${team.discipline}`)}}</span>-->
-                        <!--</v-chip>-->
-                      <!--<v-btn v-if="allowJoin" flat color="demko" @click.stop="$emit('join', team.id)">Join</v-btn>-->
-                      <!--<v-btn v-if="allowLeave" flat color="demko" @click.stop="$emit('leave', team.id)">Leave</v-btn>-->
-                    <!--</div>-->
-                <!--</v-flex>-->
-            <!--</v-card-actions>-->
         </v-card>
       </v-hover>
     </v-flex>
@@ -101,8 +81,6 @@
             console.log(color);
             console.log(this.$refs.thumbnail.style);
             this.$refs.thumbnail.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
-            //this.$refs.thumbnail.style.backgroundImage = `-webkit-gradient(linear,left top,left bottom,color-stop(0, rgba(${color.r}, ${color.g}, ${color.b}, 0.5)),color-stop(1, rgba(0,0,0,0)))`;
-
           }
         },
         computed: {
@@ -125,7 +103,6 @@
     .item {
         margin: 10px;
         min-width: 100px;
-        //width: 20%;
 
         & .card-content {
             min-height: 50px;
@@ -133,18 +110,33 @@
 
         & .thumbnail{
           background-color: #d4d4d4;
-          /*background-image: -webkit-gradient(*/
-              /*linear,*/
-              /*left top,*/
-              /*left bottom,*/
-              /*color-stop(0, lighten(black, 90%)),*/
-              /*color-stop(1, rgba(0,0,0,0))*/
-          /*);*/
 
           & img{
             filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
           }
         }
+
+        &.inactive{
+          opacity: 0.5;
+          position: relative;
+
+          &:after{
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: white;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0.4;
+          }
+        }
+
+
+
     }
 
     [class^="icon-"],
