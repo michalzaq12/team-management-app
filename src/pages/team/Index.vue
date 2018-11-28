@@ -5,10 +5,17 @@
     <div v-if="!isLoading" >
       <div class="team-details">
 
-        <div class="team-thumbnail">
+        <div class="team-thumbnail my-3">
 
           <v-card>
-            <img :src="thumbUrl" />
+
+            <v-card-text>
+              <v-layout justify-center align-center>
+                <v-thumbnail :team="team" :size="150" class="thumb"/>
+              </v-layout>
+            </v-card-text>
+
+
 
 
             <v-card-actions>
@@ -28,14 +35,26 @@
         </div>
 
 
-        <div class="team-info">
+        <div class="team-info my-3">
               <v-card>
                 <v-card-title primary-title>
                   <div>
-                    <div class="headline font-weight-bold">{{team.name}}</div>
-                    <span class="grey--text">{{team.description}}</span>
-                    <span class="grey--text">City: {{team.location.name}}</span>
+                    <div class="display-1 font-weight-bold">{{team.name}}</div>
+                    <span v-if="team.description"><span class="headline grey--text">Opis: {{team.description}}</span><br></span>
+                    <span class="headline grey--text">City: {{team.location.name}}</span>
                   </div>
+
+                  <gmap-map
+                    :center="team.location"
+                    :zoom="8"
+                    :options="{disableDefaultUI: true, styles: mapStyles}"
+                    style="width:100%;  height: 200px;"
+                  >
+                    <gmap-marker
+                      :position="team.location"
+                    ></gmap-marker>
+                  </gmap-map>
+
                 </v-card-title>
 
                 <v-divider light></v-divider>
@@ -98,14 +117,7 @@
               >
                 <template slot="items" slot-scope="props">
                   <td class="player-thumb">
-                    <v-avatar
-                      :tile="false"
-                      :size="30"
-                      color="grey lighten-4"
-                    >
-                      <img v-if="props.item.thumbnail" :src="props.item.thumbnail" alt="avatar">
-                      <img v-else src="https://via.placeholder.com/30x30"/>
-                    </v-avatar>
+                    <v-thumbnail :user="props.item"  :size="30"/>
                   </td>
                   <td>{{ props.item.first_name }}</td>
                   <td>{{ props.item.last_name }}</td>
@@ -141,11 +153,15 @@
   import moment from 'moment';
   import ThumbnailUploadButton from './ThumbUpload';
   import api from '@/api';
+  import GmapMap from 'vue2-google-maps/dist/components/map';
+  import GmapMarker from 'vue2-google-maps/dist/components/marker';
+  import mapStyles from '@/assets/mapStyles';
   export default {
     name: 'team-page',
-    components: {ThumbnailUploadButton},
+    components: {ThumbnailUploadButton, GmapMap, GmapMarker},
     data(){
       return{
+        mapStyles: mapStyles({road: '#FFA000', water: '#79c8f5'}),
         isLoading: true,
         team: null,
         tab: null,
@@ -188,7 +204,7 @@
         }).finally(() => this.isLoading = false);
       }
     },
-    mounted(){
+    created(){
       this.fetchData();
     }
   }
@@ -219,23 +235,24 @@
 
     & .team-details{
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-around;
 
       & .team-info{
         width: 50%;
+        min-width: 250px;
       }
 
       & .team-thumbnail{
-        & img{
+        min-width: 250px;
+        & .thumb {
           margin: 40px;
-          max-height: 150px;
         }
       }
     }
 
 
     & .team-players {
-      margin-top: 50px;
 
       & td{
         height: 50px;
