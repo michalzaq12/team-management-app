@@ -12,8 +12,8 @@ let config = {
 
 
   build__gh_pages: {
-    publicPath: '/dem',
-    path: path.join(__dirname, '../gh')
+    publicPath: '/web',
+    path: path.join(__dirname, '../public')
   }
 
 
