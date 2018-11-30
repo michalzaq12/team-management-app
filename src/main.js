@@ -11,30 +11,25 @@ import './eventBus';
 
 
 import '@/assets/disciplines/style.css'
-// import '@/assets/reset.css';
 
 
 import colors from 'vuetify/es5/util/colors';
 Vue.use(Vuetify, {
   theme: {
-    primary: colors.green.base, // #E53935
-    secondary: colors.red.lighten4, // #FFCDD2
+    primary: '#0288d1',
+    secondary: "#546e7a",
     accent: colors.indigo.base, // #3F51B5
-    demko: '#32aaf0'
+    demko: '#0288d1'
   }
 });
 
-import 'dayspan-vuetify/dist/lib/dayspan-vuetify.min.css'
-import DaySpanVuetify from 'dayspan-vuetify'
-Vue.use( DaySpanVuetify, {
-  methods: {
-    getDefaultEventColor: () => '#32aaf0'
-  }
-});
+import * as VueGoogleMaps from "vue2-google-maps";
 
-import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
-Vue.use(VuetifyGoogleAutocomplete, {
-  apiKey: 'AIzaSyCKkKPRpaUIu4AyAl2Nh67bnvS1_5AmvmQ'
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyCKkKPRpaUIu4AyAl2Nh67bnvS1_5AmvmQ",
+    libraries: 'places'
+  }
 });
 
 

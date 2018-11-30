@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar ref="header" :clipped-left="$vuetify.breakpoint.lgAndUp" color="demko" dark app fixed class="app-header">
+    <v-toolbar ref="header" :clipped-left="$vuetify.breakpoint.lgAndUp" color="demko" dark app fixed>
 
         <v-toolbar-title class="ml-0">
             <v-toolbar-side-icon @click.stop="toggle"></v-toolbar-side-icon>
@@ -91,17 +91,3 @@
         }
     }
 </script>
-
-
-
-<style lang="scss" scoped>
-    .app-header{
-      z-index: 10;
-    }
-
-    .d-header {
-        width: 100%;
-        height: 60px;
-        background: red;
-    }
-</style>
