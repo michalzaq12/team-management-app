@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer class="silver app-menu" :width="200" v-model="drawer" dark fixed app :clipped="$vuetify.breakpoint.lgAndUp">
+  <v-navigation-drawer dark :width="200" v-model="drawer" fixed app :clipped="$vuetify.breakpoint.lgAndUp">
 
     <v-list>
       <router-link tag="v-list-tile" :to="{name: item.component}" v-for="item in items" :key="item.title" @click="console.log('hello')">
@@ -62,13 +62,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-  .app-menu{
-    z-index: 100;
-  }
-
   .router-link-exact-active {
-    border-left: 3px solid $brand-primary;
-    background: #31313193;
+    background: $brand-secondary;
   }
 </style>
