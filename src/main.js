@@ -74,6 +74,7 @@ Vue.mixin({
 
 Vue.config.productionTip = IS_DEV;
 Vue.config.debug = IS_DEV;
+Vue.config.devtools = IS_DEV;
 
 Vue.http = Vue.prototype.$http = api;
 api.init();
