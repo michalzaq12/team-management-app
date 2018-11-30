@@ -5,9 +5,16 @@
     <div v-if="!isLoading" >
       <div class="team-details">
 
-        <div class="team-thumbnail my-3">
+        <v-layout align-center justify-center fill-height column class="team-actions">
+          <v-btn color="secondary" dark block large class="ma-0">
+            Dołącz
+          </v-btn>
+          <v-btn color="secondary" dark block large class="ma-0 mt-3" @click="openMatchInvitationModal">
+            Zaproś na sparing
+          </v-btn>
+        </v-layout>
 
-          <v-card>
+          <v-card class="team-thumbnail">
 
             <v-card-text>
               <v-layout justify-center align-center>
@@ -32,46 +39,51 @@
 
           </v-card>
 
-        </div>
+
+        <v-card class="team-name" color="demko">
+          <v-card-title primary-title class="justify-center">
+            <span class="display-1 font-weight-bold white--text">{{team.name}}</span>
+          </v-card-title>
+        </v-card>
+
+        <v-card class="team-info">
+
+          <v-card-title primary-title>
+            <span class="headline font-weight-bold">Dane klubu</span>
+          </v-card-title>
 
 
-        <div class="team-info my-3">
-              <v-card>
-                <v-card-title primary-title>
-                  <div>
-                    <div class="display-1 font-weight-bold">{{team.name}}</div>
-                    <span v-if="team.description"><span class="headline grey--text">Opis: {{team.description}}</span><br></span>
-                    <span class="headline grey--text">City: {{team.location.name}}</span>
-                  </div>
+          <v-divider />
 
+
+          <v-card-text>
+            <span v-if="team.description"><span class="headline grey--text">Opis: {{team.description}}</span><br></span>
+            <span class="headline grey--text">City: {{team.location.name}}</span>
+          </v-card-text>
+
+          <v-card-actions class="justify-center">
+
+          </v-card-actions>
+
+        </v-card>
+
+
+              <v-card class="map">
+                <v-card-text style="height: 100%;">
                   <gmap-map
                     :center="team.location"
                     :zoom="8"
                     :options="{disableDefaultUI: true, styles: mapStyles}"
-                    style="width:100%;  height: 200px;"
+                    style="width:100%;  height: 100%;"
                   >
                     <gmap-marker
                       :position="team.location"
                     ></gmap-marker>
                   </gmap-map>
-
-                </v-card-title>
-
-                <v-divider light></v-divider>
-
-                <v-card-actions>
-                  <v-btn icon>
-                    <v-icon>share</v-icon>
-                  </v-btn>
-                  <v-btn icon flat color="pink">
-                    <v-icon>favorite</v-icon>
-                  </v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn flat color="red">Remove</v-btn>
-                </v-card-actions>
+                </v-card-text>
 
               </v-card>
-        </div>
+
 
       </div>
 
@@ -145,23 +157,26 @@
 
     </div>
 
+    <MatchInvitation ref="matchInvitation"/>
+
   </div>
 </template>
 
 
 <script>
   import moment from 'moment';
+  import MatchInvitation from './MatchInvitation.modal';
   import ThumbnailUploadButton from './ThumbUpload';
   import api from '@/api';
-  import GmapMap from 'vue2-google-maps/dist/components/map';
-  import GmapMarker from 'vue2-google-maps/dist/components/marker';
   import mapStyles from '@/assets/mapStyles';
+
+
   export default {
     name: 'team-page',
-    components: {ThumbnailUploadButton, GmapMap, GmapMarker},
+    components: {ThumbnailUploadButton, MatchInvitation},
     data(){
       return{
-        mapStyles: mapStyles({road: '#FFA000', water: '#79c8f5'}),
+        mapStyles: mapStyles({road: this.$vuetify.theme.secondary, water: '#5eb8ff'}),
         isLoading: true,
         team: null,
         tab: null,
@@ -202,6 +217,9 @@
           this.team = data;
           this.setBackground();
         }).finally(() => this.isLoading = false);
+      },
+      openMatchInvitationModal(){
+        this.$refs.matchInvitation.open(this.team);
       }
     },
     created(){
@@ -215,44 +233,84 @@
   .main-container{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    flex-grow: 1;
+    /*flex-grow: 1;*/
 
     & .bg{
       position:absolute;
-      opacity: 0.2;
+      opacity: 0.1;
       top:0;
       left:0;
       width: 100%;
       height: 100%;
-      filter: blur(50px);
-      background-size:     cover;
+      filter: blur(2px);
+      background-size: auto 100%;
       background-repeat:   no-repeat;
       background-position: center center;
     }
 
 
     & .team-details{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
+      display: grid;
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas:
+        "name name map"
+        "thumbnail info map"
+        "thumbnail actions map";
+
+      @media (max-width: $breakpoint-sm) {
+        margin: 20px;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "name"
+          "thumbnail"
+          "info"
+          "actions"
+          "map";
+      }
 
       & .team-info{
-        width: 50%;
-        min-width: 250px;
+        grid-area: info;
+      }
+
+      & .team-name{
+        grid-area: name;
+      }
+
+      & .team-actions{
+        grid-area: actions;
+      }
+
+      & .map{
+        grid-area: map;
+
+        & .v-card__text{
+          min-height: 300px;
+        }
+
+        & .vue-map-container{
+          position: inherit;
+        }
       }
 
       & .team-thumbnail{
-        min-width: 250px;
+        grid-area: thumbnail;
+        align-self: stretch;
+
         & .thumb {
-          margin: 40px;
+            margin: 40px 0;
         }
       }
     }
 
 
     & .team-players {
+
+      margin-top: 20px;
 
       & td{
         height: 50px;
