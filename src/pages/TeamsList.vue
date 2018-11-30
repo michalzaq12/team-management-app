@@ -4,7 +4,7 @@
 
         <v-container grid-list-xs text-xs-center class="card">
           <transition-group name="scale" tag="v-layout" class="row wrap fill-height" appear>
-            <team v-for="team in teams" :key="team.id" :team="team" :allowLeave="true" @leave="leaveTeamConfirmation(team)"/>
+            <team v-for="team in allTeams" :key="team.id" :team="team" :allowLeave="true" @leave="leaveTeamConfirmation(team)"/>
           </transition-group>
         </v-container>
 
@@ -47,7 +47,7 @@
 <script>
     import Team from './team/Item';
     import AddTeam from './team/Add.modal';
-    import {mapGetters}  from 'vuex';
+    import {mapGetters, mapActions}  from 'vuex';
     export default {
         name: 'teams-list',
         components: {
@@ -59,34 +59,17 @@
                 isLoading: false,
                 addTeamDialog: false,
                 leaveTeamDialog: false,
-                teams: [],
                 selectedTeam: null
             }
         },
-        computed: mapGetters('auth', ['userId']),
+        computed: {
+          ...mapGetters('userTeams', ['allTeams']),
+        },
         methods: {
-            fetchTeams() {
-                this.isLoading = true;
-
-
-                // this.$http.get('/teams', {params: {page: this.currentPage, per_page: 12}}).then(({data}) => {
-                //     this.teams = data.data;
-                //     this.pageCount = data.pagination.page_count;
-                // }).finally(() => this.isLoading = false);
-
-                this.$http.get(`/users/${this.userId}/team-memberships`).then(({data: memberships}) => {
-                    const promises = [];
-
-                    for(const el of memberships){
-                      const teamPromise = this.$http.get(`/teams/${el.team.id}`).then(({data: team}) => {
-                        this.teams.push({membership_id: el.id, confirmed: el.confirmed, ...team});
-                      });
-                      promises.push(teamPromise);
-                    }
-
-                    Promise.all(promises).finally(() => this.isLoading = false)
-
-                })
+            ...mapActions('userTeams', ['fetchTeams']),
+            _fetchTeams(){
+              this.isLoading = true;
+              this.fetchTeams().finally(() => this.isLoading = false);
             },
             leaveTeamConfirmation(team){
               this.leaveTeamDialog = true;
@@ -94,13 +77,12 @@
             },
             leaveTeam(){
               this.$http.delete('/team-memberships/' + this.selectedTeam.membership_id).then(() => {
-                console.log('ok');
-                this.fetchTeams();
+                this._fetchTeams()
               });
             }
         },
         created() {
-            this.fetchTeams();
+            this._fetchTeams();
         },
     }
 </script>
