@@ -3,31 +3,31 @@
     <v-card>
     <v-toolbar dark color="primary">
       <v-toolbar-title>Wyślij zaproszenie na mecz</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-layout justify-space-between align-center class="ma-2 mt-4 mb-4">
+
+          <div style="min-width: 100px; text-align: center">
+              <v-thumbnail :team="invitingTeam"/>
+          </div>
+
+          <div>
+            <span class="headline font-weight-thin font-italic">VS</span>
+          </div>
+
+          <div style="min-width: 100px; text-align: center">
+              <v-thumbnail :team="invitedTeam" />
+          </div>
+
+        </v-layout>
+      </v-toolbar-items>
+
     </v-toolbar>
 
       <v-loading :active="isLoading" />
 
-    <v-layout justify-space-between align-center class="ma-2 mt-4 mb-4">
 
-      <div style="min-width: 100px">
-        <v-layout align-center justify-center column fill-height>
-          <v-thumbnail :team="invitingTeam"/>
-          <div class="mt-2">{{invitingTeam.name}}</div>
-        </v-layout>
-      </div>
-
-      <div>
-        <span class="display-1">VS</span>
-      </div>
-
-      <div style="min-width: 100px">
-        <v-layout align-center justify-center column fill-height>
-          <v-thumbnail :team="invitedTeam" />
-          <div class="mt-2">{{invitedTeam.name}}</div>
-        </v-layout>
-      </div>
-
-    </v-layout>
 
     <v-stepper v-model="currentStep">
 
@@ -85,7 +85,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-          <div class="mb-5">
+          <div class="mb-3">
             <span class="subheading">Kliknij prawym przyciskem aby wybrać lokalizacje</span>
             <gmap-map v-if="currentStep > 1"
               :center="invitedTeam.location"
@@ -109,13 +109,70 @@
 
 
       <v-stepper-content step="3">
-          <div class="mb-5">
-            <div class="text-xs-center headline font-weight-bold">Data</div>
+          <div class="mb-3">
+            <!--<div class="text-xs-center headline font-weight-bold">Data</div>-->
+
+            <v-dialog
+              persistent
+              v-model="dateDialog"
+              lazy
+              full-width
+              width="290px"
+            >
+              <v-text-field
+                color="demko"
+                slot="activator"
+                label="Data"
+                v-model="matchDate"
+                readonly
+              ></v-text-field>
+              <v-date-picker actions color="primary"
+                             @input="matchDate = $event"
+                             :locale="$i18n.locale">
+                <template>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat @click.stop="matchDate = null; dateDialog = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click.stop="dateDialog = false">OK</v-btn>
+                  </v-card-actions>
+                </template>
+              </v-date-picker>
+            </v-dialog>
+
+
+            <v-dialog
+              persistent
+              v-model="timeDialog"
+              lazy
+              full-width
+              width="290px"
+            >
+              <v-text-field
+                color="demko"
+                slot="activator"
+                label="Godzina"
+                v-model="matchTime"
+                readonly
+              ></v-text-field>
+              <v-time-picker actions color="primary"
+                             @input="matchTime = $event"
+                             :locale="$i18n.locale"
+                             format="24hr">
+                <template>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat @click.stop="matchTime = null; timeDialog = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click.stop="timeDialog = false">OK</v-btn>
+                  </v-card-actions>
+                </template>
+              </v-time-picker>
+            </v-dialog>
+
 
           </div>
           <div class="text-xs-center">
             <v-btn flat @click="currentStep = 2">{{$t('button.cancel')}}</v-btn>
-            <v-btn :disabled="true" color="demko" class="white--text" @click="sendInvitation">{{$t('button.continue')}}</v-btn>
+            <v-btn :disabled="matchTime === null || matchDate === null" color="demko" class="white--text" @click="sendInvitation">{{$t('button.continue')}}</v-btn>
           </div>
       </v-stepper-content>
 
@@ -125,6 +182,7 @@
 </template>
 
 <script>
+    import moment from 'moment';
     import {mapGetters, mapActions}  from 'vuex';
     export default {
         name: "matchInvitation",
@@ -132,10 +190,16 @@
           return{
             isLoading: false,
             dialog: false,
+            dateDialog: false,
+            timeDialog: false,
+
             currentStep: 1,
-            matchLocation: null,
+
             invitedTeam: {},
-            invitingTeam: {}
+            invitingTeam: {},
+            matchLocation: null,
+            matchDate: null,
+            matchTime: null
           }
         },
         computed: {
@@ -148,6 +212,11 @@
         },
         methods:{
           ...mapActions('userTeams', ['fetchTeams']),
+          clear(){
+            this.matchLocation = null;
+            this.matchDate = null;
+            this.matchTime = null;
+          },
           open(invitedTeam){
             this.isLoading = true;
             this.fetchTeams().finally(() => this.isLoading = false);
@@ -155,7 +224,19 @@
             this.dialog = true;
           },
           sendInvitation(){
-            //todo
+            this.isLoading = true;
+
+            const datetime = moment(this.matchDate + ' ' + this.matchTime, 'YYYY-MM-DD HH:mm').format();
+
+            this.$http.post('/match-invitations', {
+              inviting_team_id: this.invitingTeam.id,
+              invited_team_id: this.invitedTeam.id,
+              location: this.matchLocation,
+              date: datetime
+            }).then(() => this.dialog = false)
+              .finally(() => this.isLoading = false)
+
+
           },
           createTeamIcon(team){
             if(team.thumbnail === null) return null;
@@ -175,6 +256,7 @@
             }
           },
           setMapCenter(location){
+            this.matchLocation = location;
             this.$refs.map.$mapPromise.then(map => {
               map.setCenter(location);
               map.setZoom(12);
@@ -206,7 +288,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
