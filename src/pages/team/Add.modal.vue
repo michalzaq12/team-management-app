@@ -52,7 +52,6 @@
 
             <div class="mb-5">
                 <div class="text-xs-center headline font-weight-bold">Wybierz lokalizacje</div>
-                <!--<vuetify-google-autocomplete id="map" ref="autocomplete" color="demko" append-icon="search" clearable required label="Nazwa miejscowości" types="(cities)" country="PL" @placechanged="getAddressData" />-->
                 <autocomplete @place_changed="placeChanged"/>
             </div>
             <div class="text-xs-center">
@@ -94,6 +93,8 @@
 <script>
     import ThumbnailUploadButton from './ThumbUpload';
     import Autocomplete from '@/components/Autocomplete';
+
+    import {mapActions}  from 'vuex';
     export default {
         name: 'add-team-modal',
         components: {
@@ -151,6 +152,7 @@
             }
         },
         methods: {
+            ...mapActions('userTeams', ['fetchTeams']),
             placeChanged(location) {
               this.form.location = location
             },
@@ -166,7 +168,7 @@
                 this.$http.post('/teams', this.form).then(({data}) => {
                     return this.$refs.upload.send(`/teams/${data.id}/thumbnail`)
                 }).then(() => {
-                    // this.$parent.$parent.fetchTeams();
+                    this.fetchTeams();
                 }).finally(() => {
                     this.close();
                     this.isLoading = false;
