@@ -15,12 +15,12 @@
       <v-menu offset-y transition="slide-y-transition">
         <v-btn slot="activator" icon>
           <v-badge top color="red" overlap>
-            <span slot="badge" v-if="notifications.length > 0">{{notifications.length}}</span>
+            <span slot="badge" v-if="notificationsCount > 0">{{notificationsCount}}</span>
             <v-icon>notifications</v-icon>
           </v-badge>
         </v-btn>
 
-        <notifications :notifications="notifications"/>
+        <notifications @notifications-count="notificationsCount = $event"/>
 
       </v-menu>
 
@@ -36,8 +36,7 @@
 
 <script>
     import LangSwitcher from './LangSwitcher';
-    import Notifications from './Notifications';
-    import {mapGetters}  from 'vuex';
+    import Notifications from './notifications/Index';
     export default {
         name: 'app-header',
         components: {
@@ -48,7 +47,7 @@
         data() {
             return {
               drawer: this.value,
-              notifications: []
+              notificationsCount: 0
             }
         },
         methods: {
@@ -59,12 +58,6 @@
             logout(){
               this.$store.dispatch('auth/logout')
                 .then(()=> this.$router.push({name: 'login'}));
-            },
-            fetchNotifications(){
-              this.$http.get(`/users/${this.userId}/notifications`).then(({data}) => {
-                this.notifications = [];
-                this.notifications = data;
-              })
             }
         },
         mounted(){
@@ -74,15 +67,6 @@
               desktop: Math.ceil(64 * 0.67),
               dense: Math.ceil(48 * 0.67)
           };
-        },
-        computed: mapGetters('auth', ['userId']),
-
-        created(){
-          this.fetchNotifications();
-          //this.notificationInterval = window.setInterval(this.fetchNotifications, 3000);
-        },
-        beforeDestroy(){
-          //window.clearInterval(this.notificationInterval);
         },
         watch: {
             value(newValue) {

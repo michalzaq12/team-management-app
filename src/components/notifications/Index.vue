@@ -33,10 +33,26 @@
 
 
             <v-list-tile-sub-title class="text--primary">
-                <span v-if="item.type === 'team_join_request'">Prośba o dołączenie do zespołu {{item.data.team.name}}</span>
-                <span v-else-if="item.type === 'team_membership_approval'">Zaakceptowano Twoją prośbę</span>
-                <span v-else-if="item.type === 'match_invitation'">Zaproszenie na mecz</span>
-                <span v-else-if="item.type === 'match_invitation_rejection'">Odrzucenie zaproszenia</span>
+                <span v-if="item.type === 'team_join_request'">
+                  <v-icon :color="item.data.team_membership.confirmed ? 'grey lighten-1' : 'yellow darken-2'">star</v-icon>
+                  Prośba o dołączenie do zespołu {{item.data.team.name}}
+                </span>
+                <span v-else-if="item.type === 'team_membership_approval'">
+                  <v-icon color="grey lighten-1">verified_user</v-icon>
+                  Zaakceptowano Twoją prośbę
+                </span>
+                <span v-else-if="item.type === 'match_invitation'">
+                  <v-icon :color="item.data.invitation.status === 'waiting' ? 'yellow darken-2' : 'grey lighten-1'">star</v-icon>
+                  Zaproszenie na mecz
+                </span>
+                <span v-else-if="item.type === 'match_invitation_approval'">
+                  <v-icon color="grey lighten-1">thumb_up</v-icon>
+                  Drużyna przyjeła zaproszenie
+                </span>
+                <span v-else-if="item.type === 'match_invitation_rejection'">
+                  <v-icon color="grey lighten-1">thumb_down</v-icon>
+                  Odrzucenie zaproszenia
+                </span>
             </v-list-tile-sub-title>
 
 
@@ -50,7 +66,7 @@
           <v-list-tile-action>
             <v-list-tile-action-text>{{item.create_time | date}}</v-list-tile-action-text>
 
-            <v-btn icon @click.stop="deleteNotification">
+            <v-btn icon @click.stop="removeNotification(item)">
               <v-icon>clear</v-icon>
             </v-btn>
           </v-list-tile-action>
@@ -78,16 +94,16 @@
 </template>
 
 <script>
+  import {mapGetters}  from 'vuex';
   import moment from 'moment';
   import MembershipConfirmation from './MembershipConfirmation.modal';
   import MatchInvitation from './MatchInvitation.modal';
   export default {
     name: "notifications-list",
     components: {MembershipConfirmation, MatchInvitation},
-    props: {
-      notifications: {
-        type: Array,
-        required: true
+    data(){
+      return {
+        notifications: []
       }
     },
     filters: {
@@ -102,12 +118,31 @@
         else return minutes + 'm ';
       },
     },
+    computed: mapGetters('auth', ['userId']),
     methods: {
+      fetchNotifications(){
+        this.$http.get(`/users/${this.userId}/notifications`).then(({data}) => {
+          this.notifications = [];
+          this.notifications = data;
+          this.$emit('notifications-count', this.notifications.length);
+        })
+      },
       onClick(notification){
         if(notification.type === 'team_join_request') this.$refs.membershipConfirmation.open(notification);
         else if (notification.type === 'match_invitation') this.$refs.matchInvitation.open(notification);
+      },
+      removeNotification(notification){
+        this.$http.delete('/notifications/' + notification.id);
+        this.notifications.splice(this.notifications.indexOf(notification), 1);
       }
-    }
+    },
+    created(){
+      this.fetchNotifications();
+      //this.notificationInterval = window.setInterval(this.fetchNotifications, 5000);
+    },
+    beforeDestroy(){
+      //window.clearInterval(this.notificationInterval);
+    },
   }
 </script>
 
