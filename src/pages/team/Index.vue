@@ -123,17 +123,18 @@
 
               <v-data-table
                 :headers="headers"
-                :items="team.players"
-
-                class=""
+                :items="players"
               >
                 <template slot="items" slot-scope="props">
                   <td class="player-thumb">
-                    <v-thumbnail :user="props.item"  :size="30"/>
+                    <v-thumbnail :user="props.item" :size="30" :avatar="true"/>
                   </td>
                   <td>{{ props.item.first_name }}</td>
                   <td>{{ props.item.last_name }}</td>
-                  <td >{{ props.item.born_date }} ({{getAge(props.item.born_date)}} l.)</td>
+                  <td >{{ props.item.born_date }}
+                    <span v-if="props.item.born_date">({{getAge(props.item.born_date)}} l.)</span>
+                    <span v-else>-</span>
+                  </td>
                 </template>
               </v-data-table>
 
@@ -145,12 +146,16 @@
 
           <v-tab-item>
             <v-card flat>
-              <v-card-text>HEY@2</v-card-text>
+
+              <v-container grid-list-xs text-xs-center class="card">
+                <transition-group name="scale" tag="v-layout" class="row wrap fill-height" appear>
+                  <match v-for="match in matches" :match="match" :key="match.id" />
+                </transition-group>
+              </v-container>
+
             </v-card>
           </v-tab-item>
         </v-tabs-items>
-
-
 
 
       </div>
@@ -169,16 +174,18 @@
   import ThumbnailUploadButton from './ThumbUpload';
   import api from '@/api';
   import mapStyles from '@/assets/mapStyles';
-
+  import Match from '../match/Item';
 
   export default {
     name: 'team-page',
-    components: {ThumbnailUploadButton, MatchInvitation},
+    components: {ThumbnailUploadButton, MatchInvitation, Match},
     data(){
       return{
         mapStyles: mapStyles({road: this.$vuetify.theme.secondary, water: '#5eb8ff'}),
         isLoading: true,
         team: null,
+        players: [],
+        matches: [],
         tab: null,
         headers: [
           { text: '', value: 'thumbnail'},
@@ -191,6 +198,9 @@
     computed: {
       thumbUrl(){
         return api.API_URL + this.team.thumbnail;
+      },
+      teamId(){
+        return this.$route.params.teamId;
       }
     },
     methods: {
@@ -213,17 +223,29 @@
       },
       fetchData(){
         this.isLoading = true;
-        this.$http.get('/teams/' + this.$route.params.teamId).then(({data}) => {
+        this.$http.get('/teams/' + this.teamId).then(({data}) => {
           this.team = data;
           this.setBackground();
         }).finally(() => this.isLoading = false);
       },
       openMatchInvitationModal(){
         this.$refs.matchInvitation.open(this.team);
+      },
+      fetchPlayers(){
+        this.$http.get(`/teams/${this.teamId}/team-memberships`).then(({data}) => {
+          this.players = data.map(el => el.user);
+        })
+      },
+      fetchMatches(){
+        this.$http.get(`/teams/${this.teamId}/matches`).then(({data}) => {
+          this.matches = data;
+        })
       }
     },
     created(){
       this.fetchData();
+      this.fetchPlayers();
+      this.fetchMatches();
     }
   }
 </script>
