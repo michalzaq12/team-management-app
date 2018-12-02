@@ -1,5 +1,6 @@
 <template>
         <v-container fluid fill-height>
+          <v-loading :active="isLoading" :is-full-page="true"/>
              <v-layout  align-center justify-center row>
                  <v-flex xs12 sm6 md4 lg3 xl2>
                     <div class="text-xs-center" v-if="!isLoading">
@@ -29,15 +30,11 @@ export default {
     },
     methods:{
         activate(){
-            this.$eventBus.$emit('loading', true);
+            this.isLoading = true;
             this.$http.get('/users/confirm/' + this.$route.params.token).then(() => {
-                this.isLoading = false;
-                this.$eventBus.$emit('loading', false);
                 this.setTimers()
-            }).catch(() => {
-                this.redirectToLoginPage();
-                this.$eventBus.$emit('loading', false);
-            })
+            }).catch(() => this.redirectToLoginPage())
+              .finally(() => this.isLoading = false)
         },
         setTimers(){
              const progressInterval = setInterval(() => {
