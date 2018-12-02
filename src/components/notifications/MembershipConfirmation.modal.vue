@@ -69,7 +69,7 @@
           },
           sendConfirmation(){
             this.isLoading = true;
-            this.$http.post(`/team-memberships/${this.selectedItem.data.team_membership.id}/confirm`).then(() => {
+            this.$http.post(`/team-memberships/${this.notification.data.team_membership.id}/confirm`).then(() => {
               this.dialog = false;
             }).finally(() => this.isLoading = false);
           }
