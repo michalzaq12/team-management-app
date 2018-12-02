@@ -63,9 +63,9 @@
       <v-card-actions class="mt-3">
         <v-spacer></v-spacer>
 
-        <v-btn flat="flat" @click="dialog = false">Odrzuć</v-btn>
+        <v-btn flat="flat" @click="answer('rejected')">Odrzuć</v-btn>
 
-        <v-btn color="primary" @click="sendConfirmation">Akceptuj</v-btn>
+        <v-btn color="primary" @click="answer('approved')">Akceptuj</v-btn>
 
       </v-card-actions>
     </v-card>
@@ -96,11 +96,15 @@
           },
           getTime(date){
             return moment(date).format('HH:mm');
+          },
+          answer(status = 'approved'){
+            this.isLoading = true;
+            this.$http.put(`/match-invitations/${this.notification.data.invitation.id}/status`, {
+              status
+            }).then(() => this.dialog = false)
+              .finally(() => this.isLoading = false);
           }
         }
     }
 </script>
 
-<style scoped>
-
-</style>
