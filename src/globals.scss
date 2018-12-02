@@ -1,9 +1,8 @@
-$brand-primary: #32aaf0;
+$brand-primary: #0288d1;
+$brand-secondary: #546e7a;
 
-$scale: 1;
 
-//$app-height: calc(#{100 + $scale * 100}vh - 60px);
-//$app-width: 150%;
+
 
 $app-height: calc(100vh - 60px);
 $app-width: 100%;
@@ -13,6 +12,9 @@ $app-width: 100%;
   cursor: pointer;
 }
 
+$breakpoint-xs: 600px;
+$breakpoint-sm: 960px;
+$breakpoint-md: 1264px;
 
 
 //animations

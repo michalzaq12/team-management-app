@@ -5,7 +5,7 @@
 
         <v-flex xs12 sm8 md8 style="max-width: 600px">
           <v-card>
-            <v-toolbar dark color="teal">
+            <v-toolbar dark color="primary">
               <v-toolbar-side-icon @click="editMode = false">
                 <v-icon v-if="!editMode">info</v-icon>
                 <v-icon v-else>keyboard_arrow_left</v-icon>
@@ -13,7 +13,7 @@
               <v-toolbar-title>Your profile</v-toolbar-title>
             </v-toolbar>
 
-            <v-flex class="pa-4">
+            <v-flex class="pa-4 justify-center">
               <v-thumbnail :user="user" :size="80" :avatar="true"/>
               <a class="v-btn v-btn--icon theme--light activator" v-if="editMode">
                 <thumbnail-upload-button ref="upload" :raw="true" @file-selected="updateThumbnail">
@@ -47,21 +47,21 @@
                     v-model="user.born_date"
                     readonly
                   ></v-text-field>
-                  <v-date-picker actions color="teal"
+                  <v-date-picker actions color="primary"
                                  @input="user.born_date = parseDate($event)"
                                  ref="pickerInDialog" :max="maxDate" :min="minDate" :locale="$i18n.locale">
                     <template>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn flat @click.stop="user.born_date = null; modal = false">Cancel</v-btn>
-                        <v-btn flat color="demko" @click.stop="modal = false">OK</v-btn>
+                        <v-btn flat color="primary" @click.stop="modal = false">OK</v-btn>
                       </v-card-actions>
                     </template>
                   </v-date-picker>
                 </v-dialog>
 
               </v-form>
-              <v-btn block color="teal" class="white--text" @click="updateUserInfo">Save</v-btn>
+              <v-btn block color="primary" class="white--text" @click="updateUserInfo">Save</v-btn>
 
 
               <v-form class="mt-3">
@@ -70,7 +70,7 @@
                               @input="validateRepeatedPassword"
                               :error-messages="passwordRepeatHint" :error="passwordRepeatError"/>
               </v-form>
-              <v-btn block color="teal" class="white--text" @click="updatePassword">Change password</v-btn>
+              <v-btn block color="primary" class="white--text" @click="updatePassword">Change password</v-btn>
 
 
             </v-card-text>

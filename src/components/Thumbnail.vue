@@ -1,5 +1,5 @@
 <template>
-  <v-avatar v-if="avatar" :size="size" class="elevation-2" :color="hasThumbnail ? '' : 'teal'">
+  <v-avatar v-if="avatar" :size="size" class="elevation-2" :color="hasThumbnail ? '' : 'secondary'">
     <img v-if="team && team.thumbnail" :src="apiUrl + team.thumbnail">
     <span v-else-if="team" class="white--text headline">{{team.name.charAt(0)}}</span>
 

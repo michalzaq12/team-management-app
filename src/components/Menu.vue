@@ -63,6 +63,12 @@
 
 <style lang="scss" scoped>
   .router-link-exact-active {
-    background: $brand-secondary;
+    /*background: rgba(255, 255, 255, 0.5);*/
+    background: opacify($brand-secondary, 0.5);
+    //color: $brand-secondary;
+
+    /*<!--& .v-icon{-->*/
+      /*<!--color: $brand-primary;-->*/
+    /*<!--}-->*/
   }
 </style>

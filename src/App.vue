@@ -46,7 +46,7 @@
 
       this.$eventBus.$on('info', msg => {
         this.errorText = msg;
-        this.color = 'info';
+        this.color = 'primary';
         this.snackbar = true;
       });
 
