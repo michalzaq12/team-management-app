@@ -3,7 +3,7 @@
 
         <v-toolbar-title class="ml-0">
             <v-toolbar-side-icon @click.stop="toggle"></v-toolbar-side-icon>
-            <span class="font-weight-bold title">DemCouch</span>
+            <span class="font-weight-bold title"></span>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>

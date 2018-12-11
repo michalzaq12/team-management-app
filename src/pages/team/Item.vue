@@ -78,8 +78,6 @@
           img.src = api.API_URL + this.team.thumbnail;
           img.onload = () => {
             const color = colorsUtil.getDominant(img);
-            console.log(color);
-            console.log(this.$refs.thumbnail.style);
             this.$refs.thumbnail.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
           }
         },

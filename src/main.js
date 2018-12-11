@@ -18,7 +18,7 @@ Vue.use(Vuetify, {
   theme: {
     primary: '#0288d1',
     secondary: "#546e7a",
-    accent: colors.indigo.base, // #3F51B5
+    accent: '#ffffff', // #3F51B5
     demko: '#0288d1'
   }
 });
