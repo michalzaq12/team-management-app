@@ -16,7 +16,7 @@
 <script>
   import BasicLayout from '@/BasicLayout';
   import Vue from 'vue';
-  import Loading from '@/components/Loading2';
+  import Loading from '@/components/Loading';
   import Thumbnail from '@/components/Thumbnail';
 
   Vue.component('v-loading', Loading);
