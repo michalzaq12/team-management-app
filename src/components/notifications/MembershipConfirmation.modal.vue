@@ -10,7 +10,7 @@
 
 
       <v-toolbar dark color="primary">
-        <v-toolbar-title>Czy chcesz aby {{notification.data.sender.last_name}} dołączył do drużyny?</v-toolbar-title>
+        <v-toolbar-title>{{$t('notifications.membershipConfirmation', {lastName: notification.data.sender.last_name})}}</v-toolbar-title>
       </v-toolbar>
 
 
@@ -43,9 +43,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn flat="flat" @click="dialog = false">Nie</v-btn>
+        <v-btn flat="flat" @click="dialog = false">{{$t('button.no')}}</v-btn>
 
-        <v-btn color="primary" @click="sendConfirmation">Tak</v-btn>
+        <v-btn color="primary" @click="sendConfirmation">{{$t('button.yes')}}</v-btn>
 
       </v-card-actions>
     </v-card>

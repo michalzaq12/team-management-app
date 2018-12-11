@@ -10,7 +10,7 @@
 
 
       <v-toolbar dark color="primary" class="mb-2">
-        <v-toolbar-title>Zaproszenie na mecz od {{notification.data.sender.name}}</v-toolbar-title>
+        <v-toolbar-title>{{$t('notifications.matchInvitation')}} {{notification.data.sender.name}}</v-toolbar-title>
       </v-toolbar>
 
 
@@ -63,9 +63,9 @@
       <v-card-actions class="mt-3">
         <v-spacer></v-spacer>
 
-        <v-btn flat="flat" @click="answer('rejected')">Odrzuć</v-btn>
+        <v-btn flat="flat" @click="answer('rejected')">{{$t('button.reject')}}</v-btn>
 
-        <v-btn color="primary" @click="answer('approved')">Akceptuj</v-btn>
+        <v-btn color="primary" @click="answer('approved')">{{$t('button.accept')}}</v-btn>
 
       </v-card-actions>
     </v-card>

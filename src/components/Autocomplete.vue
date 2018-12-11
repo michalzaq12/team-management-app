@@ -1,5 +1,5 @@
 <template>
-  <v-text-field color="demko" label="Wpisz lokalizacje" v-model="val" ref="autocomplete" prepend-icon="location_on"></v-text-field>
+  <v-text-field color="demko" :label="$t('global.location')" v-model="val" ref="autocomplete" prepend-icon="location_on"></v-text-field>
 </template>
 
 <script>

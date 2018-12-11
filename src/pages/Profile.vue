@@ -10,7 +10,7 @@
                 <v-icon v-if="!editMode">info</v-icon>
                 <v-icon v-else>keyboard_arrow_left</v-icon>
               </v-toolbar-side-icon>
-              <v-toolbar-title>Your profile</v-toolbar-title>
+              <v-toolbar-title>{{$t('menu.profile')}}</v-toolbar-title>
             </v-toolbar>
 
             <v-flex class="pa-4 justify-center">
@@ -30,8 +30,8 @@
             <v-card-text class="py-3" v-if="editMode">
 
               <v-form>
-                <v-text-field color="demko" type="text" v-model="user.first_name" label="First Name" required />
-                <v-text-field color="demko" type="text" v-model="user.last_name" label="Last Email" required />
+                <v-text-field color="demko" type="text" v-model="user.first_name" :label="$t('user.firstName')" required />
+                <v-text-field color="demko" type="text" v-model="user.last_name" :label="$t('user.lastName')" required />
 
                 <v-dialog
                   persistent
@@ -43,7 +43,7 @@
                   <v-text-field
                     color="demko"
                     slot="activator"
-                    label="Date of birth"
+                    :label="$t('user.bornDate')"
                     v-model="user.born_date"
                     readonly
                   ></v-text-field>
@@ -53,7 +53,7 @@
                     <template>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat @click.stop="user.born_date = null; modal = false">Cancel</v-btn>
+                        <v-btn flat @click.stop="user.born_date = null; modal = false">{{$t('button.cancel')}}</v-btn>
                         <v-btn flat color="primary" @click.stop="modal = false">OK</v-btn>
                       </v-card-actions>
                     </template>
@@ -61,16 +61,16 @@
                 </v-dialog>
 
               </v-form>
-              <v-btn block color="primary" class="white--text" @click="updateUserInfo">Save</v-btn>
+              <v-btn block color="primary" class="white--text" @click="updateUserInfo">{{$t('button.save')}}</v-btn>
 
 
               <v-form class="mt-3">
-                <v-text-field color="demko" type="password" v-model="password" label="Password" required />
-                <v-text-field color="demko" type="password" v-model="repeatedPassword" label="Repeat password" required
+                <v-text-field color="demko" type="password" v-model="password" :label="$t('global.password')" required />
+                <v-text-field color="demko" type="password" v-model="repeatedPassword" :label="$t('global.repeatPassword')" required
                               @input="validateRepeatedPassword"
                               :error-messages="passwordRepeatHint" :error="passwordRepeatError"/>
               </v-form>
-              <v-btn block color="primary" class="white--text" @click="updatePassword">Change password</v-btn>
+              <v-btn block color="primary" class="white--text" @click="updatePassword">{{$t('button.change')}}</v-btn>
 
 
             </v-card-text>
@@ -78,9 +78,9 @@
 
             <v-card-text class="pt-5 pb-5" v-else>
               <div class="pa-1"><span class="title font-weight-bold">Email: </span> <span class="title">{{user.email}}</span></div>
-              <div class="pa-1"><span class="title font-weight-bold">First name: </span> <span class="title">{{user.first_name}}</span></div>
-              <div class="pa-1"><span class="title font-weight-bold ">Last name: </span> <span class="title">{{user.last_name}}</span></div>
-              <div class="pa-1"><span class="title font-weight-bold ">Born date: </span> <span class="title">{{user.born_date}}</span></div>
+              <div class="pa-1"><span class="title font-weight-bold">{{$t('user.firstName')}}: </span> <span class="title">{{user.first_name}}</span></div>
+              <div class="pa-1"><span class="title font-weight-bold ">{{$t('user.lastName')}}: </span> <span class="title">{{user.last_name}}</span></div>
+              <div class="pa-1"><span class="title font-weight-bold ">{{$t('user.bornDate')}}: </span> <span class="title">{{user.born_date}}</span></div>
 
 
 
@@ -89,9 +89,9 @@
             <v-divider></v-divider>
 
             <v-card-actions v-if="!editMode">
-              <v-btn flat color="red" @click="" >Remove</v-btn>
+              <v-btn flat color="red" @click="" >{{$t('button.remove')}}</v-btn>
               <v-spacer></v-spacer>
-              <v-btn flat @click="editMode = true" >Edit</v-btn>
+              <v-btn flat @click="editMode = true" >{{$t('button.edit')}}</v-btn>
             </v-card-actions>
           </v-card>
 

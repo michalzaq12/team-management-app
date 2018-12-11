@@ -6,7 +6,7 @@
         <v-container grid-list-xl fluid class="pt-0 pb-0">
             <v-layout wrap>
                 <v-flex xs12 sm4>
-                    <v-text-field color="demko" label="Nazwa drużyny" v-model="terms.name" prepend-icon="search"></v-text-field>
+                    <v-text-field color="demko" :label="$t('global.teamName')" v-model="terms.name" prepend-icon="search"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm4>
                   <autocomplete @place_changed="placeChanged" />
@@ -21,9 +21,7 @@
                               :max="1000"
                               thumb-label="always"
                               :disabled="isLoading"
-                              label="Odległość [KM]"
-                              hint="Promień "
-                              persistent-hint
+                              :label="$t('global.radius') + ' [KM]'"
                     ></v-slider>
                 </v-flex>
             </v-layout>

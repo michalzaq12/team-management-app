@@ -2,7 +2,7 @@
   <div>
     <v-list two-line style="min-width: 400px;">
 
-      <v-subheader class="subheading">Powiadomienia</v-subheader>
+      <v-subheader class="subheading">{{$t('notifications.notifications')}}</v-subheader>
 
       <template v-for="(item, index) in notifications">
 
@@ -35,36 +35,30 @@
             <v-list-tile-sub-title class="text--primary">
                 <span v-if="item.type === 'team_join_request'">
                   <v-icon :color="item.data.team_membership.confirmed ? 'grey lighten-1' : 'yellow darken-2'">star</v-icon>
-                  Prośba o dołączenie do zespołu {{item.data.team.name}}
+                  {{$t('notifications.wantsToJoin')}}
                 </span>
                 <span v-else-if="item.type === 'team_membership_approval'">
                   <v-icon color="grey lighten-1">verified_user</v-icon>
-                  Zaakceptowano Twoją prośbę
+                  {{$t('notifications.joined')}}
                 </span>
                 <span v-else-if="item.type === 'match_invitation'">
                   <v-icon :color="item.data.invitation.status === 'waiting' ? 'yellow darken-2' : 'grey lighten-1'">star</v-icon>
-                  Zaproszenie na mecz
+                  {{$t('notifications.wantsToPlay')}}
                 </span>
                 <span v-else-if="item.type === 'match_invitation_approval'">
                   <v-icon color="grey lighten-1">thumb_up</v-icon>
-                  Drużyna przyjeła zaproszenie
+                  {{$t('notifications.acceptedInvitation')}}
                 </span>
                 <span v-else-if="item.type === 'match_invitation_rejection'">
                   <v-icon color="grey lighten-1">thumb_down</v-icon>
-                  Odrzucenie zaproszenia
+                  {{$t('notifications.rejectedInvitation')}}
                 </span>
-            </v-list-tile-sub-title>
-
-
-            <v-list-tile-sub-title class="subheading">
-              <span v-if="item.type === 'team_join_request'"></span>
-              <span v-else-if="item.type === 'team_membership_approval'">Od teraz należysz do zespołu {{item.data.sender.name}}</span>
             </v-list-tile-sub-title>
 
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <v-list-tile-action-text>{{item.create_time | date}}</v-list-tile-action-text>
+            <v-list-tile-action-text>{{item.create_date | date}}</v-list-tile-action-text>
 
             <v-btn icon @click.stop="removeNotification(item)">
               <v-icon>clear</v-icon>
@@ -108,14 +102,15 @@
     },
     filters: {
       date(date){
-        date = moment.utc(date).toDate();
+        date = moment(date).toDate();
         const days = moment().diff(date, 'days');
         const hours = moment().diff(date, 'hours');
         const minutes = moment().diff(date, 'minutes');
 
         if(days > 0) return days + 'd ';
         if(hours > 0) return hours + 'h ';
-        else return minutes + 'm ';
+        else if(minutes > 0) return minutes + 'm ';
+        else return 'teraz';
       },
     },
     computed: mapGetters('auth', ['userId']),
@@ -138,10 +133,10 @@
     },
     created(){
       this.fetchNotifications();
-      //this.notificationInterval = window.setInterval(this.fetchNotifications, 5000);
+      this.notificationInterval = window.setInterval(this.fetchNotifications, 10000);
     },
     beforeDestroy(){
-      //window.clearInterval(this.notificationInterval);
+      window.clearInterval(this.notificationInterval);
     },
   }
 </script>

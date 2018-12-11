@@ -2,15 +2,15 @@
   <div class="main-container" >
     <div ref="containerBg" class="bg"></div>
     <v-loading :active="isLoading" />
-    <div v-if="!isLoading" >
+    <div>
       <div class="team-details">
 
-        <v-layout align-center justify-center fill-height column class="team-actions">
-          <v-btn color="secondary" dark block large class="ma-0">
-            Dołącz
+        <v-layout v-if="!isUserTeamMember" align-center justify-center fill-height column class="team-actions">
+          <v-btn color="primary" dark block large class="ma-0" @click="joinToTeam">
+            {{$t('teamPage.join')}}
           </v-btn>
-          <v-btn color="secondary" dark block large class="ma-0 mt-3" @click="openMatchInvitationModal">
-            Zaproś na sparing
+          <v-btn color="primary" dark block large class="ma-0 mt-3" @click="openMatchInvitationModal">
+            {{$t('teamPage.sendInvitation')}}
           </v-btn>
         </v-layout>
 
@@ -25,14 +25,14 @@
 
 
 
-            <v-card-actions>
+            <v-card-actions v-if="isUserLeader">
               <v-spacer></v-spacer>
               <a class="v-btn v-btn--icon theme--light activator">
                 <thumbnail-upload-button ref="upload" :raw="true" @file-selected="updateThumbnail">
                     <v-icon>create</v-icon>
                 </thumbnail-upload-button>
               </a>
-              <v-btn icon @click="deleteThumbnail">
+              <v-btn icon v-if="team.thumbnail !== null" @click="deleteThumbnail">
                 <v-icon>clear</v-icon>
               </v-btn>
             </v-card-actions>
@@ -40,7 +40,7 @@
           </v-card>
 
 
-        <v-card class="team-name" color="demko">
+        <v-card class="team-name" color="secondary">
           <v-card-title primary-title class="justify-center">
             <span class="display-1 font-weight-bold white--text">{{team.name}}</span>
           </v-card-title>
@@ -48,8 +48,17 @@
 
         <v-card class="team-info">
 
-          <v-card-title primary-title>
-            <span class="headline font-weight-bold">Dane klubu</span>
+          <v-card-title primary-title class="justify-space-between">
+            <span class="headline font-weight-bold">{{$t('teamPage.teamDetails')}}</span>
+            <div v-if="isUserLeader">
+              <v-btn icon @click="editTeam">
+                <v-icon>create</v-icon>
+              </v-btn>
+              <v-btn icon @click="removeTeam">
+                <v-icon>clear</v-icon>
+              </v-btn>
+            </div>
+
           </v-card-title>
 
 
@@ -57,8 +66,8 @@
 
 
           <v-card-text>
-            <span v-if="team.description"><span class="headline grey--text">Opis: {{team.description}}</span><br></span>
-            <span class="headline grey--text">City: {{team.location.name}}</span>
+            <span v-if="team.description"><span class="headline grey--text">{{$t('global.description')}}: {{team.description}}</span><br></span>
+            <span class="headline grey--text">{{$t('teamPage.city')}}: {{team.location.name}}</span>
           </v-card-text>
 
           <v-card-actions class="justify-center">
@@ -71,6 +80,7 @@
               <v-card class="map">
                 <v-card-text style="height: 100%;">
                   <gmap-map
+                    v-if="team.location.lat"
                     :center="team.location"
                     :zoom="8"
                     :options="{disableDefaultUI: true, styles: mapStyles}"
@@ -94,18 +104,18 @@
           <v-tabs
             slot="extension"
             v-model="tab"
-            color="demko"
+            color="secondary"
             grow
             dark
             icons-and-text
           >
             <v-tabs-slider dark></v-tabs-slider>
             <v-tab>
-              Zawodnicy
+              {{$t('teamPage.members')}}
               <v-icon>people_outline</v-icon>
             </v-tab>
-            <v-tab light>
-              Kalendarz
+            <v-tab>
+              {{$t('teamPage.matches')}}
               <v-icon>event</v-icon>
             </v-tab>
           </v-tabs>
@@ -117,7 +127,7 @@
             <v-card>
               <v-card-title primary-title>
                 <div>
-                  <div class="headline">Zawodnicy</div>
+                  <div class="headline">{{$t('teamPage.members')}}</div>
                 </div>
               </v-card-title>
 
@@ -127,13 +137,24 @@
               >
                 <template slot="items" slot-scope="props">
                   <td class="player-thumb">
-                    <v-thumbnail :user="props.item" :size="30" :avatar="true"/>
+                    <v-thumbnail :user="props.item.user" :size="30" :avatar="true"/>
                   </td>
-                  <td>{{ props.item.first_name }}</td>
-                  <td>{{ props.item.last_name }}</td>
-                  <td >{{ props.item.born_date }}
-                    <span v-if="props.item.born_date">({{getAge(props.item.born_date)}} l.)</span>
+                  <td><v-chip>{{$t(`role.${props.item.role}`)}}</v-chip></td>
+                  <td>{{ props.item.user.first_name }}</td>
+                  <td>{{ props.item.user.last_name }}</td>
+                  <td >{{ props.item.user.born_date }}
+                    <span v-if="props.item.user.born_date">({{getAge(props.item.user.born_date)}} l.)</span>
                     <span v-else>-</span>
+                  </td>
+                  <td>
+                    <v-layout align-center justify-space-between>
+                      <div>{{ formatDate(props.item.create_date) }}</div>
+                      <div v-if="isUserLeader">
+                        <v-btn icon @click="removeMembership(props.item.id)">
+                          <v-icon>clear</v-icon>
+                        </v-btn>
+                      </div>
+                    </v-layout>
                   </td>
                 </template>
               </v-data-table>
@@ -163,6 +184,7 @@
     </div>
 
     <MatchInvitation ref="matchInvitation"/>
+    <!--<add-team-modal ref="addTeamModal"/>-->
 
   </div>
 </template>
@@ -175,23 +197,31 @@
   import api from '@/api';
   import mapStyles from '@/assets/mapStyles';
   import Match from '../match/Item';
-
+  import AddTeamModal from './Add.modal';
+  import {mapGetters}  from 'vuex';
   export default {
     name: 'team-page',
-    components: {ThumbnailUploadButton, MatchInvitation, Match},
+    components: {AddTeamModal, ThumbnailUploadButton, MatchInvitation, Match},
     data(){
       return{
         mapStyles: mapStyles({road: this.$vuetify.theme.secondary, water: '#5eb8ff'}),
         isLoading: true,
-        team: null,
+        team: {
+          name: '',
+          location:{
+            name: ''
+          }
+        },
         players: [],
         matches: [],
         tab: null,
         headers: [
           { text: '', value: 'thumbnail'},
-          { text: 'Imie', value: 'calories' },
-          { text: 'Nazwisko', value: 'fat' },
-          { text: 'Data urodzenia', value: 'carbs' },
+          { text: 'Rola', value: 'role', sortable: false},
+          { text: this.$t('user.firstName') },
+          { text: this.$t('user.lastName') },
+          { text: this.$t('user.bornDate') },
+          { text: 'Dołączył' }
         ],
       }
     },
@@ -201,14 +231,43 @@
       },
       teamId(){
         return this.$route.params.teamId;
-      }
+      },
+      isUserTeamMember(){
+        if(this.players.length === 0) return false;
+        return this.players.map(el => el.user).find(player => player.id === this.userId) !== undefined;
+      },
+      isUserLeader(){
+        if(this.players.length === 0) return false;
+        return this.players.find(membership => membership.role === 'leader'
+          && membership.user.id === this.userId) !== undefined;
+      },
+      ...mapGetters('auth', ['userId'])
     },
     methods: {
+      joinToTeam(){
+        this.isLoading = true;
+        this.$http.post('/team-memberships', {team_id: this.teamId}).then(() => {
+          this.$eventBus.$emit('info', 'Wysłano prośbę o dołączenie')
+        }).finally(() => this.isLoading = false);
+      },
+      editTeam(){
+        this.$refs.addTeamModal.edit({
+          name: this.team.name,
+          discipline: this.team.discipline,
+          location: this.team.location
+        })
+      },
+      removeTeam(){
+        this.$http.delete('/teams/' + this.team.id);
+      },
       setBackground(){
         this.$refs.containerBg.style.backgroundImage = `url('${this.thumbUrl}')`;
       },
       getAge(date){
-        return moment().diff(moment(date, 'DD-MM-YYYY'), 'years');
+        return moment().diff(moment(date, 'YYYY-MM-DD'), 'years');
+      },
+      formatDate(date){
+        return moment(date).format('YYYY-MM-DD');
       },
       updateThumbnail(){
         this.isLoading = true;
@@ -225,7 +284,7 @@
         this.isLoading = true;
         this.$http.get('/teams/' + this.teamId).then(({data}) => {
           this.team = data;
-          this.setBackground();
+          this.$nextTick(() => this.setBackground());
         }).finally(() => this.isLoading = false);
       },
       openMatchInvitationModal(){
@@ -233,19 +292,25 @@
       },
       fetchPlayers(){
         this.$http.get(`/teams/${this.teamId}/team-memberships`).then(({data}) => {
-          this.players = data.map(el => el.user);
+          this.players = data;
+        }).then(() => {
+          if(this.isUserTeamMember) this.fetchMatches();
         })
       },
       fetchMatches(){
         this.$http.get(`/teams/${this.teamId}/matches`).then(({data}) => {
           this.matches = data;
         })
+      },
+      removeMembership(membershipId){
+        this.$http.delete('/team-memberships/' + membershipId).then(() => {
+          this.fetchPlayers();
+        });
       }
     },
     created(){
       this.fetchData();
       this.fetchPlayers();
-      this.fetchMatches();
     }
   }
 </script>
@@ -305,6 +370,7 @@
 
       & .team-actions{
         grid-area: actions;
+        min-height: 100px;
       }
 
       & .map{
