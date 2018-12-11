@@ -156,6 +156,10 @@
             placeChanged(location) {
               this.form.location = location
             },
+            edit(team){
+              this.form = team;
+              this.$emit('update:isOpen', true);
+            },
             close(){
                     this.reset(this.form);
                     this.reset(this.valid, false);
