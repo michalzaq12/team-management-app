@@ -46,37 +46,14 @@
       }
     },
     methods: {
-      /**
-       * Close the Modal if canCancel.
-       */
       cancel() {
-        if (!this.canCancel || !this.isActive) return
+        if (!this.canCancel || !this.isActive) return;
         this.close()
       },
-      /**
-       * Emit events, and destroy modal if it's programmatic.
-       */
       close() {
-        this.onCancel.apply(null, arguments)
-        this.$emit('close')
-        this.$emit('update:active', false)
-      },
-      /**
-       * Keypress event that is bound to the document.
-       */
-      keyPress(event) {
-        // Esc key
-        if (event.keyCode === 27) this.cancel()
-      }
-    },
-    created() {
-      if (typeof window !== 'undefined') {
-        document.addEventListener('keyup', this.keyPress)
-      }
-    },
-    beforeDestroy() {
-      if (typeof window !== 'undefined') {
-        document.removeEventListener('keyup', this.keyPress)
+        this.onCancel.apply(null, arguments);
+        this.$emit('close');
+        this.$emit('update:active', false);
       }
     }
   }
