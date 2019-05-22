@@ -33,7 +33,6 @@
 
 
 <script>
-  import ImageCompressor from '@xkeshi/image-compressor'
   import FileUpload from 'vue-upload-component'
   export default {
     components: {
