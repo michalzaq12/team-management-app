@@ -110,7 +110,7 @@
         if(days > 0) return days + 'd ';
         if(hours > 0) return hours + 'h ';
         else if(minutes > 0) return minutes + 'm ';
-        else return 'teraz';
+        else return 'now';
       },
     },
     computed: mapGetters('auth', ['userId']),

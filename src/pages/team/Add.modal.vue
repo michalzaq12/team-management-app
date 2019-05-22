@@ -10,7 +10,7 @@
 
             <v-divider></v-divider>
 
-            <v-stepper-step :complete="currentStep > 3" step="3" color="demko">Lokalizacja</v-stepper-step>
+            <v-stepper-step :complete="currentStep > 3" step="3" color="demko">{{$t('global.location')}}</v-stepper-step>
 
             <v-divider></v-divider>
 
@@ -47,11 +47,11 @@
             </v-form>
         </v-stepper-content>
 
-        <v-stepper-step v-if="$vuetify.breakpoint.smAndUp" :complete="currentStep > 3" step="3" color="demko">Lokalizacja</v-stepper-step>
+        <v-stepper-step v-if="$vuetify.breakpoint.smAndUp" :complete="currentStep > 3" step="3" color="demko">{{$t('global.location')}}</v-stepper-step>
         <v-stepper-content step="3">
 
             <div class="mb-5">
-                <div class="text-xs-center headline font-weight-bold">Wybierz lokalizacje</div>
+                <div class="text-xs-center headline font-weight-bold">{{$t('addTeamForm.chooseLocation')}}</div>
                 <autocomplete @place_changed="placeChanged"/>
             </div>
             <div class="text-xs-center">
@@ -68,13 +68,13 @@
                 <div class="pa-2 text-xs-center subheading font-weight-normal">{{$t('global.canSkip')}}</div>
                 <div class="pa-2 text-xs-center">
 
-                  <v-layout align-center justify-space-between column class="upload-container">
-                    <thumbnail-upload-button ref="upload">
-                      {{$t('button.selectFile')}}
-                      <v-icon right dark>cloud_upload</v-icon>
-                    </thumbnail-upload-button>
-                    <div class="elevation-1 thumb"><img v-if="$refs.upload && $refs.upload.files[0] && $refs.upload.files[0].thumb" :src="$refs.upload.files[0].thumb" width="auto" height="100" /></div>
-                  </v-layout>
+                    <v-layout align-center justify-space-between column class="upload-container">
+                        <thumbnail-upload-button ref="upload">
+                            {{$t('button.selectFile')}}
+                            <v-icon right dark>cloud_upload</v-icon>
+                        </thumbnail-upload-button>
+                        <div class="elevation-1 thumb"><img v-if="$refs.upload && $refs.upload.files[0] && $refs.upload.files[0].thumb" :src="$refs.upload.files[0].thumb" width="auto" height="100" /></div>
+                    </v-layout>
 
                 </div>
             </v-card>
@@ -154,18 +154,18 @@
         methods: {
             ...mapActions('userTeams', ['fetchTeams']),
             placeChanged(location) {
-              this.form.location = location
+                this.form.location = location
             },
             edit(team){
-              this.form = team;
-              this.$emit('update:isOpen', true);
+                this.form = team;
+                this.$emit('update:isOpen', true);
             },
             close(){
-                    this.reset(this.form);
-                    this.reset(this.valid, false);
-                    this.$refs.upload.reset();
-                    this.currentStep = 1;
-                    this.$emit('update:isOpen', false);
+                this.reset(this.form);
+                this.reset(this.valid, false);
+                this.$refs.upload.reset();
+                this.currentStep = 1;
+                this.$emit('update:isOpen', false);
             },
             submit() {
                 this.isLoading = true;
@@ -183,5 +183,3 @@
         }
     }
 </script>
-
-

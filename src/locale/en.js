@@ -9,16 +9,18 @@ export default {
         radius: 'Radius',
         password: 'Password',
         repeatPassword: 'Repeat password',
-        description: 'Description'
+        description: 'Description',
+        date: 'Date',
+        time: 'Time'
     },
     user: {
-      firstName: 'First name',
-      lastName: 'Last name',
-      bornDate: 'Date of birth'
+        firstName: 'First name',
+        lastName: 'Last name',
+        bornDate: 'Date of birth'
     },
     role:{
-      leader: 'Leader',
-      player: 'Player',
+        leader: 'Leader',
+        player: 'Player',
     },
     validation:{
         atLeast: 'At least {count} characters'
@@ -53,31 +55,40 @@ export default {
         chooseTeam: 'Choose your team name',
         chooseDiscipline: 'Choose discipline',
         chooseThumbnail: 'Choose thumbnail',
+        chooseLocation: 'Choose location',
         required:{
             teamName: 'Team name is required',
             teamDiscipline: 'Team discipline is required'
         }
     },
     teamPage: {
-      teamDetails: 'Team details',
-      city: 'City',
-      join: 'Join the team',
-      sendInvitation: 'Invite for game',
-      members: 'Members',
-      matches: 'Matches'
+        teamDetails: 'Team details',
+        city: 'City',
+        join: 'Join the team',
+        sendInvitation: 'Invite for game',
+        members: 'Members',
+        matches: 'Matches'
     },
     notifications: {
-      notifications: 'Notifications',
-      wantsToJoin: 'wants to join your team',
-      joined: 'You joined the team',
-      wantsToPlay: 'wants to play match',
-      acceptedInvitation: 'accepted your invitation',
-      rejectedInvitation: 'rejected your invitation',
+        notifications: 'Notifications',
+        wantsToJoin: 'wants to join your team',
+        joined: 'You joined the team',
+        wantsToPlay: 'wants to play match',
+        acceptedInvitation: 'accepted your invitation',
+        rejectedInvitation: 'rejected your invitation',
 
-      matchInvitation: 'Match invitation from',
-      membershipConfirmation: 'Do you want {lastName} to join the team ?'
+        matchInvitation: 'Match invitation from',
+        membershipConfirmation: 'Do you want {lastName} to join the team ?'
     },
     match: {
-      details: 'Match details'
+        details: 'Match details'
+    },
+    sendInvitationForm: {
+        title: 'Send invitation for game',
+        teamSelection: 'Select team',
+        selectYourTeam: 'Select one of your team',
+        place: 'Meeting spot',
+        time: 'Meeting time',
+        mouseClick: 'Click mouse button to select location'
     }
 }

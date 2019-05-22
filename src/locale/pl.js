@@ -8,12 +8,14 @@ export default {
         radius: 'Promień',
         password: 'Hasło',
         repeatPassword: 'Powtórz hasło',
-        description: 'Opis'
+        description: 'Opis',
+        date: 'Data',
+        time: 'Czas'
     },
     user: {
-      firstName: 'Imię',
-      lastName: 'Nazwisko',
-      bornDate: 'Data urodzenia'
+        firstName: 'Imię',
+        lastName: 'Nazwisko',
+        bornDate: 'Data urodzenia'
     },
     role:{
         leader: 'Lider',
@@ -52,31 +54,40 @@ export default {
         chooseTeam: 'Wybierz nazwę drużyny',
         chooseDiscipline: 'Wybierz dyscypline',
         chooseThumbnail: 'Wybierz miniaturke',
+        chooseLocation: 'Wybierz lokalizacje',
         required:{
             teamName: 'Nazwa drużyny jest wymagana',
             teamDiscipline: 'Wybierz dyscypline!'
         }
     },
     teamPage: {
-      teamDetails: 'Dane drużyny',
-      city: 'Miejscowość',
-      join: 'Dołącz do zespołu',
-      sendInvitation: 'Zaproś na sparing',
-      members: 'Zawodnicy',
-      matches: 'Mecze'
+        teamDetails: 'Dane drużyny',
+        city: 'Miejscowość',
+        join: 'Dołącz do zespołu',
+        sendInvitation: 'Zaproś na sparing',
+        members: 'Zawodnicy',
+        matches: 'Mecze'
     },
     notifications: {
-      notifications: 'Powiadomienia',
-      wantsToJoin: 'chce dołączyć do Twojej drużyny',
-      joined: 'Dołączyłeś do drużyny',
-      wantsToPlay: 'wysyła zaproszenie na mecz',
-      acceptedInvitation: 'zaakceptowano zaproszenie na mecz',
-      rejectedInvitation: 'odrzucono twoje zaproszenie',
+        notifications: 'Powiadomienia',
+        wantsToJoin: 'chce dołączyć do Twojej drużyny',
+        joined: 'Dołączyłeś do drużyny',
+        wantsToPlay: 'wysyła zaproszenie na mecz',
+        acceptedInvitation: 'zaakceptowano zaproszenie na mecz',
+        rejectedInvitation: 'odrzucono twoje zaproszenie',
 
-      matchInvitation: 'Zaprosznie na mecz od',
-      membershipConfirmation: 'Czy chcesz aby {lastName} dołączył do zespołu ?'
+        matchInvitation: 'Zaprosznie na mecz od',
+        membershipConfirmation: 'Czy chcesz aby {lastName} dołączył do zespołu ?'
     },
     match: {
-      details: 'Szczegóły wydarzenia'
+        details: 'Szczegóły wydarzenia'
+    },
+    sendInvitationForm: {
+        title: 'Wyślij zaproszenie na mecz',
+        teamSelection: 'Wybór drużyny',
+        selectYourTeam: 'Wybierz jedną ze swoich prowadzoncyh drużyn',
+        place: 'Miejsce rozegrania spotkania',
+        time: 'Czas spotkania',
+        mouseClick: 'Kliknij prawym przyciskem aby wybrać lokalizacje\n'
     }
 }

@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="600">
     <v-card>
     <v-toolbar dark color="primary">
-      <v-toolbar-title>Wyślij zaproszenie na mecz</v-toolbar-title>
+      <v-toolbar-title>{{$t('sendInvitationForm.title')}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -32,15 +32,15 @@
     <v-stepper v-model="currentStep">
 
       <v-stepper-header>
-        <v-stepper-step :complete="currentStep > 1" step="1" color="demko">Wybór drużyny</v-stepper-step>
+        <v-stepper-step :complete="currentStep > 1" step="1" color="demko">{{$t('sendInvitationForm.teamSelection')}}</v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step :complete="currentStep > 2" step="2" color="demko">Miejsce rozegrania spotkania</v-stepper-step>
+        <v-stepper-step :complete="currentStep > 2" step="2" color="demko">{{$t('sendInvitationForm.place')}}</v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step :complete="currentStep > 3" step="3" color="demko">Czas spotkania</v-stepper-step>
+        <v-stepper-step :complete="currentStep > 3" step="3" color="demko">{{$t('sendInvitationForm.time')}}</v-stepper-step>
 
       </v-stepper-header>
 
@@ -51,7 +51,7 @@
             subheader
             two-line
           >
-            <v-subheader>Wybierz jedną ze swoich prowadzoncyh drużyn</v-subheader>
+            <v-subheader>{{$t('sendInvitationForm.selectYourTeam')}}</v-subheader>
 
 
             <v-radio-group v-model="invitingTeam" color="demko">
@@ -86,7 +86,7 @@
 
       <v-stepper-content step="2">
           <div class="mb-3">
-            <span class="subheading">Kliknij prawym przyciskem aby wybrać lokalizacje</span>
+            <span class="subheading">{{$t('sendInvitationForm.mouseClick')}}</span>
             <gmap-map v-if="currentStep > 1"
               :center="invitedTeam.location"
               ref="map"
@@ -122,7 +122,7 @@
               <v-text-field
                 color="demko"
                 slot="activator"
-                label="Data"
+                :label="$t('global.date')"
                 v-model="matchDate"
                 readonly
               ></v-text-field>
@@ -150,7 +150,7 @@
               <v-text-field
                 color="demko"
                 slot="activator"
-                label="Godzina"
+                :label="$t('global.time')"
                 v-model="matchTime"
                 readonly
               ></v-text-field>
