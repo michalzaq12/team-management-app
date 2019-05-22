@@ -1,5 +1,5 @@
-
 ## Quick start
+> Project skeleton: [vue-web-starter](https://github.com/michalzaq12/vue-web-starter)
 
   ```bash
   # install dependencies
@@ -10,13 +10,14 @@
   
   # serve with hot reload at localhost:3333
   npm run dev
-  
-  # build for github pages
-  npm run gh
   ```
 
-  
+
 ## About project
+
+Project concerns implementation of internet portal helping to unite amateur sport teams and organise matches between teams from local communities. The portal consists of back-end application, mobile application and web application. Communication between these components is based on REST architecture. 
+
+This repo contains only web application
 
 ## Application screenshots
 
